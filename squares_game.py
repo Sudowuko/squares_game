@@ -52,8 +52,6 @@ class Squares_Game:
         print(self.answer_grid)
     
     ## guess_squares: This is where the user guesses which squares 1s based on the randomized grid
-    ## ideally I need another blank grid 
-    ## current problem: List index out of range
     def guess_squares (self):
         points = 0
         correct_coords = []
@@ -61,6 +59,9 @@ class Squares_Game:
             ## User guess
             guess_y = int(input("X Coord "))
             guess_x = int(input("Y Coord "))
+            if (guess_x >= self.col or guess_y >= self.row):
+                print("Coordinate out of range, try again")
+                continue
             guess_coord = [guess_x, guess_y]
             if (guess_coord in correct_coords):
                 print("You already guessed this correctly, try again")
@@ -105,7 +106,6 @@ class Squares_Game:
         self.create_grid()
         self.randomize_grid()
         self.guess_squares()
-        print()
 
 # Eventually turn this into difficulties 
 # I.e. Easy, medium, and hard
