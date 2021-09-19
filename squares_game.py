@@ -11,10 +11,11 @@ from random import randrange
 
 class Squares_Game:
 
-    def __init__ (self, row, col, lvl, answer_grid, user_grid):
+    def __init__ (self, row, col, lvl, lives, answer_grid, user_grid):
         self.row = int(row)
         self.col = int(col)
         self.lvl = int(lvl)
+        self.lives = int(lives)
         self.answer_grid = answer_grid 
         self.user_grid = user_grid 
         
@@ -26,10 +27,10 @@ class Squares_Game:
         print("the grid will have", self.col, "columns")
         self.answer_grid = []
         self.user_grid = []
-        for c in range(self.row):
+        for c in range(self.col):
             self.answer_grid.append([])
             self.user_grid.append([])
-            for r in range(self.col):
+            for r in range(self.row):
                 self.answer_grid[-1].append(0)
                 self.user_grid[-1].append(0)
 
@@ -49,38 +50,66 @@ class Squares_Game:
     
     ## guess_squares: This is where the user guesses which squares 1s based on the randomized grid
     ## ideally I need another blank grid 
-    ## current problem: I think the X and Y values are flipped
-    ##                  You can guess the same squares you already got correct
-
+    ## current problem: You can guess the same squares you already got correct [Fixed?]
+    ##                  List index out of range
+    ##                  Values ares still flipped :(
     def guess_squares (self):
         lives = 0
         points = 0
+        correct_coords = []
         while (points != self.lvl and lives < 3):
+            ## User guess
             guess_x = int(input("X Coord "))
             guess_y = int(input("Y Coord "))
-            if ((self.answer_grid[guess_x][guess_y]) == 1):
+            guess_coord = [guess_x, guess_y]
+            ## Correct guess
+            if ((self.answer_grid[guess_x][guess_y]) == 1 and guess_coord not in correct_coords):
                 (self.user_grid[guess_x][guess_y]) = 1
                 points += 1
+                correct_coords.append([guess_x, guess_y])
                 print("You guessed correct, keep going")
                 print("current grid ", self.user_grid)
+            ## Incorrect guess
             else:
                 print("Incorrect, try again")
                 lives += 1
+        ## If the user got everything right, they level up 
         if (points == self.lvl):
             print("Moving to next level")
             self.lvl += 1
+        ## If they used up all their lives they lose the game
         else:
             print("Game over")
-        print("Your Grid ", self.user_grid)
-        print("Answer grid ", self.answer_grid)
+            print("Your Grid ", self.user_grid)
+            print("Answer grid ", self.answer_grid)
+    
+    def difficulty (self):
+        diff = input("Difficulty? ")
+        if (diff == "e"):
+            self.row = 3
+            self.col = 3
+        elif (diff == "m"):
+            self.row = 4
+            self.col = 4
+        elif (diff == "h"):
+            self.row = 5
+            self.col = 5
+        self.level_up()
+
+    def level_up (self):
+        self.create_grid()
+        self.randomize_grid()
+        self.guess_squares()
+        print()
 
 # Eventually turn this into difficulties 
 # I.e. Easy, medium, and hard
-r = input("Number of rows? ")
-c = input("Number of columns ")
+#r = input("Number of rows? ")
+#c = input("Number of columns ")
 
-g = Squares_Game(r, c, 3, [], [])
-g.create_grid()
-g.randomize_grid()
-g.guess_squares()
+g = Squares_Game(0, 0, 3, 3, [], [])
+g.difficulty()
+#g.create_grid()
+#g.randomize_grid()
+#g.guess_squares()
 
