@@ -7,8 +7,7 @@
 ## Array[Row][Col] = Array[y][x]
 ## I.e. Row = y, Col = x
 
-## current steps
-## create a grid 
+## current step: Fix winning condition
 
 from random import randrange
 
@@ -26,8 +25,6 @@ class Squares_Game:
     ##Create_grid: Creates a grid based on user inputs for rows and columns
     ##Errors I need to fix: Handle invalid data entries such as no integer inputs
     def create_grid (self):
-        print("the grid will have", self.row, "rows")
-        print("the grid will have", self.col, "columns")
         self.answer_grid = []
         self.user_grid = []
         for c in range(self.row):
@@ -48,7 +45,7 @@ class Squares_Game:
             if ((self.answer_grid[rand_x][rand_y]) == 0):
                 (self.answer_grid[rand_x][rand_y]) = 1
                 start_lvl += 1
-        print("random grid")
+        #print("random grid")
         print(self.answer_grid)
     
     ## guess_squares: This is where the user guesses which squares 1s based on the randomized grid
@@ -80,16 +77,17 @@ class Squares_Game:
         ## If the user got everything right, they level up 
         if (points == self.lvl):
             print("Moving to next level")
+            points = 0
             self.lvl += 1
-            self.level_up()
-            
+            return self.level_up()
         ## If they used up all their lives they lose the game
         else:
             print("Game over")
             print("Your Grid ", self.user_grid)
             print("Answer grid ", self.answer_grid)
+            return False
     
-    def difficulty (self):
+    def start (self):
         diff = input("Difficulty? ")
         if (diff == "e"):
             self.row = 3
@@ -106,15 +104,21 @@ class Squares_Game:
         self.create_grid()
         self.randomize_grid()
         self.guess_squares()
+        half_squares = int((self.row * self.col) / 2)
+        print("half", half_squares)
+        print("level", self.lvl)
+        if (half_squares <= self.lvl):
+            print("You win")
+            return True
 
-# Eventually turn this into difficulties 
-# I.e. Easy, medium, and hard
-#r = input("Number of rows? ")
-#c = input("Number of columns ")
+ #   def win (self):
+  #      total_squares = self.row * self.col
+   #     if (int(total_squares / 2) <= self.lvl):
+    #        print("You win")
+     #       return True
+      #  else:
+       #     return False
 
-g = Squares_Game(0, 0, 3, 3, [], [])
-g.difficulty()
-#g.create_grid()
-#g.randomize_grid()
-#g.guess_squares()
+g = Squares_Game(0, 0, 4, 3, [], [])
+g.start()
 
