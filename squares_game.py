@@ -20,10 +20,25 @@ class Squares_Game:
         self.lives = int(lives)
         self.answer_grid = answer_grid 
         self.user_grid = user_grid 
-        
     
+    ## Function to start the game
+    def start (self):
+        diff = input("Difficulty? ")
+        ## Easy
+        if (diff == "e"):
+            self.row = 3
+            self.col = 3
+        ## Medium
+        elif (diff == "m"):
+            self.row = 4
+            self.col = 4
+        ## Hard
+        elif (diff == "h"):
+            self.row = 5
+            self.col = 5
+        return self.level_up()
+
     ##Create_grid: Creates a grid based on user inputs for rows and columns
-    ##Errors I need to fix: Handle invalid data entries such as no integer inputs
     def create_grid (self):
         self.answer_grid = []
         self.user_grid = []
@@ -34,7 +49,6 @@ class Squares_Game:
                 self.answer_grid[-1].append(0)
                 self.user_grid[-1].append(0)
 
-            
     ## Randomize_grid: Changes the grid values from 0 to 1 based on level
     ## 1s represent the number you need to memorize for the game
     def randomize_grid (self):
@@ -86,38 +100,19 @@ class Squares_Game:
             print("Your Grid ", self.user_grid)
             print("Answer grid ", self.answer_grid)
             return False
-    
-    def start (self):
-        diff = input("Difficulty? ")
-        if (diff == "e"):
-            self.row = 3
-            self.col = 3
-        elif (diff == "m"):
-            self.row = 4
-            self.col = 4
-        elif (diff == "h"):
-            self.row = 5
-            self.col = 5
-        self.level_up()
-
+            
+     ## Steps that allow you to move to the next level
     def level_up (self):
         self.create_grid()
         self.randomize_grid()
         self.guess_squares()
+        ## Winning condition
         half_squares = int((self.row * self.col) / 2)
         print("half", half_squares)
         print("level", self.lvl)
         if (half_squares <= self.lvl):
             print("You win")
             return True
-
- #   def win (self):
-  #      total_squares = self.row * self.col
-   #     if (int(total_squares / 2) <= self.lvl):
-    #        print("You win")
-     #       return True
-      #  else:
-       #     return False
 
 g = Squares_Game(0, 0, 4, 3, [], [])
 g.start()
