@@ -3,6 +3,9 @@
 ## 1 is black square
 ## have the rows and columns be constant
 ## Note: Once you have accomplished these things, then you can change it
+## default python 2D grids are backwards
+## Array[Row][Col] = Array[y][x]
+## I.e. Row = y, Col = x
 
 ## current steps
 ## create a grid 
@@ -27,10 +30,10 @@ class Squares_Game:
         print("the grid will have", self.col, "columns")
         self.answer_grid = []
         self.user_grid = []
-        for c in range(self.col):
+        for c in range(self.row):
             self.answer_grid.append([])
             self.user_grid.append([])
-            for r in range(self.row):
+            for r in range(self.col):
                 self.answer_grid[-1].append(0)
                 self.user_grid[-1].append(0)
 
@@ -40,8 +43,8 @@ class Squares_Game:
     def randomize_grid (self):
         start_lvl = 0
         while (start_lvl != self.lvl):
-            rand_x = randrange(self.row)
-            rand_y = randrange(self.col)
+            rand_y = randrange(self.row)
+            rand_x = randrange(self.col)
             if ((self.answer_grid[rand_x][rand_y]) == 0):
                 (self.answer_grid[rand_x][rand_y]) = 1
                 start_lvl += 1
@@ -50,20 +53,19 @@ class Squares_Game:
     
     ## guess_squares: This is where the user guesses which squares 1s based on the randomized grid
     ## ideally I need another blank grid 
-    ## current problem: You can guess the same squares you already got correct [Fixed?]
-    ##                  List index out of range
-    ##                  Values ares still flipped :(
+    ## current problem: List index out of range
     def guess_squares (self):
-        lives = 0
         points = 0
         correct_coords = []
-        while (points != self.lvl and lives < 3):
+        while (points != self.lvl and self.lives > 0):
             ## User guess
-            guess_x = int(input("X Coord "))
-            guess_y = int(input("Y Coord "))
+            guess_y = int(input("X Coord "))
+            guess_x = int(input("Y Coord "))
             guess_coord = [guess_x, guess_y]
+            if (guess_coord in correct_coords):
+                print("You already guessed this correctly, try again")
             ## Correct guess
-            if ((self.answer_grid[guess_x][guess_y]) == 1 and guess_coord not in correct_coords):
+            elif ((self.answer_grid[guess_x][guess_y]) == 1):
                 (self.user_grid[guess_x][guess_y]) = 1
                 points += 1
                 correct_coords.append([guess_x, guess_y])
@@ -72,11 +74,14 @@ class Squares_Game:
             ## Incorrect guess
             else:
                 print("Incorrect, try again")
-                lives += 1
+                self.lives -= 1
+        correct_coords = []
         ## If the user got everything right, they level up 
         if (points == self.lvl):
             print("Moving to next level")
             self.lvl += 1
+            self.level_up()
+            
         ## If they used up all their lives they lose the game
         else:
             print("Game over")
