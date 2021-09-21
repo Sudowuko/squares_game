@@ -7,7 +7,9 @@
 ## Array[Row][Col] = Array[y][x]
 ## I.e. Row = y, Col = x
 
-## current step: Fix winning condition
+## Current steps: 
+##    Convert text form to GUI form 
+##    Add in score? 
 
 from random import randrange
 
@@ -59,7 +61,6 @@ class Squares_Game:
             if ((self.answer_grid[rand_x][rand_y]) == 0):
                 (self.answer_grid[rand_x][rand_y]) = 1
                 start_lvl += 1
-        #print("random grid")
         print(self.answer_grid)
     
     ## guess_squares: This is where the user guesses which squares 1s based on the randomized grid
@@ -97,7 +98,6 @@ class Squares_Game:
             if (self.win_game()):
                 return True
             return self.level_up()
-
         ## If they used up all their lives they lose the game
         else:
             print("Game over")
@@ -122,6 +122,6 @@ class Squares_Game:
             return True
         return False
 
-g = Squares_Game(0, 0, 4, 3, [], [])
+g = Squares_Game(0, 0, 1, 3, [], [])
 g.start()
 
