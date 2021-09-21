@@ -93,7 +93,11 @@ class Squares_Game:
             print("Moving to next level")
             points = 0
             self.lvl += 1
+            ## Winning condition
+            if (self.win_game()):
+                return True
             return self.level_up()
+
         ## If they used up all their lives they lose the game
         else:
             print("Game over")
@@ -106,13 +110,17 @@ class Squares_Game:
         self.create_grid()
         self.randomize_grid()
         self.guess_squares()
-        ## Winning condition
+    
+    ## win_game: After the halfway point in the game, the user wins mainly because it doesn't get any more difficult, the colours just get flipped
+    ##          This is more efficient than just waiting until the squares change colour 
+    def win_game (self):
         half_squares = int((self.row * self.col) / 2)
         print("half", half_squares)
         print("level", self.lvl)
         if (half_squares <= self.lvl):
             print("You win")
             return True
+        return False
 
 g = Squares_Game(0, 0, 4, 3, [], [])
 g.start()
