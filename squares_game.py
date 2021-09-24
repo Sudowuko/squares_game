@@ -11,6 +11,11 @@
 ##    Convert text form to GUI form 
 ##    Add in score? 
 
+## Using the Tkinter library to build the GUI
+import tkinter as tk
+window = tk.Tk()
+
+
 from random import randrange
 
 class Squares_Game:
@@ -122,6 +127,10 @@ class Squares_Game:
             return True
         return False
 
+#top.mainloop()
+
 g = Squares_Game(0, 0, 1, 3, [], [])
 g.start()
+
+
 
