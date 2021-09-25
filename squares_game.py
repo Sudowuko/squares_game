@@ -14,6 +14,24 @@
 ## Using the Tkinter library to build the GUI
 import tkinter as tk
 window = tk.Tk()
+greeting = tk.Label(text="Hello, Tkinter")
+mylabel = tk.Label(
+    text="Test, this is a label",
+    fg = "white",
+    bg = "black"
+)
+## Button testing
+mybutton = tk.Button(
+    text = "Click me!",
+    width = 25,
+    height = 5,
+    bg = "blue",
+    fg = "yellow",
+)
+greeting.pack()
+mylabel.pack()
+mybutton.pack()
+window.mainloop()
 
 
 from random import randrange
