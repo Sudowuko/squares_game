@@ -8,43 +8,37 @@
 ## I.e. Row = y, Col = x
 
 ## Current steps: 
-##    Convert text form to GUI form 
-##    Add in score? 
+##    Figure out how to put Tkinter functions directly into the class
 
 ## Using the Tkinter library to build the GUI
 import tkinter as tk
-window = tk.Tk()
-greeting = tk.Label(text="Hello, Tkinter")
-mylabel = tk.Label(
-    text="Test, this is a label",
-    fg = "white",
-    bg = "black"
-)
-## Button testing
-mybutton = tk.Button(
-    text = "Click me!",
-    width = 25,
-    height = 5,
-    bg = "blue",
-    fg = "yellow",
-)
-greeting.pack()
-mylabel.pack()
-mybutton.pack()
-window.mainloop()
-
-
 from random import randrange
 
 class Squares_Game:
 
-    def __init__ (self, row, col, lvl, lives, answer_grid, user_grid):
+    def __init__ (self, master, row, col, lvl, lives, answer_grid, user_grid):
+        ## GUI GRID STUFF
+        self.master = master
+        master.title("A simple GUI")
+        ## GAME BASED STUFF
         self.row = int(row)
         self.col = int(col)
         self.lvl = int(lvl)
         self.lives = int(lives)
         self.answer_grid = answer_grid 
         self.user_grid = user_grid 
+       # greeting = tk.Label(text="Hello, Tkinter")
+       # greeting.pack()
+        ## GUI GRID STUFF
+        self.label = tk.Label(master, text = "This is our first GUI!")
+        self.label.pack()
+        self.greet_button = tk.Button(master, text = "Greet", command=self.greet)
+        self.greet_button.pack()
+        self.close_button = tk.Button(master, text = "Close", command=master.quit)
+        self.close_button.pack()
+    
+    def greet(self):
+        print("greetings")
     
     ## Function to start the game
     def start (self):
@@ -147,7 +141,15 @@ class Squares_Game:
 
 #top.mainloop()
 
-g = Squares_Game(0, 0, 1, 3, [], [])
+#greeting.pack()
+#mylabel.pack()
+#mybutton.pack()
+#window.mainloop()
+
+root = tk.Tk()
+
+g = Squares_Game(root, 0, 0, 1, 3, [], [])
+root.mainloop()
 g.start()
 
 
