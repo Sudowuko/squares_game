@@ -1,9 +1,6 @@
 ## To make it easier to start, make it text based
 ## 0 is a white square
 ## 1 is black square
-## have the rows and columns be constant
-## Note: Once you have accomplished these things, then you can change it
-## default python 2D grids are backwards
 ## Array[Row][Col] = Array[y][x]
 ## I.e. Row = y, Col = x
 
@@ -139,15 +136,7 @@ class Squares_Game:
             return True
         return False
 
-#top.mainloop()
-
-#greeting.pack()
-#mylabel.pack()
-#mybutton.pack()
-#window.mainloop()
-
 root = tk.Tk()
-
 g = Squares_Game(root, 0, 0, 1, 3, [], [])
 root.mainloop()
 g.start()
