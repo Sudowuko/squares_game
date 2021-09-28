@@ -24,19 +24,18 @@ class Squares_Game:
         self.lives = int(lives)
         self.answer_grid = answer_grid 
         self.user_grid = user_grid 
-       # greeting = tk.Label(text="Hello, Tkinter")
-       # greeting.pack()
         ## GUI GRID STUFF
-        self.label = tk.Label(master, text = "This is our first GUI!")
-        self.label.pack()
-        self.greet_button = tk.Button(master, text = "Greet", command=self.greet)
-        self.greet_button.pack()
-        self.close_button = tk.Button(master, text = "Close", command=master.quit)
-        self.close_button.pack()
-    
-    def greet(self):
-        print("greetings")
-    
+        self.start_button = tk.Button(master, text = "Start", command=self.start)
+        self.start_button.pack()
+        '''
+        button1 = tk.Button(self.master, text = "button1")
+            button1.grid(row=1, column = 0)
+            button2 = tk.Button(self.master, text = "button2")
+            button2.grid(row=2, column = 2)
+            button3 = tk.Button(self.master, text = "button3")
+            button3.grid(row=3, column = 0)
+        '''
+
     ## Function to start the game
     def start (self):
         diff = input("Difficulty? ")
@@ -58,6 +57,11 @@ class Squares_Game:
     def create_grid (self):
         self.answer_grid = []
         self.user_grid = []
+        #frame = tk.Frame(self.master)
+        #self.master.rowconfigure(0, weight = 1)
+        #self.master.columnconfigure(0, weight = 1)
+        #frame.grid(row = 0, column = 0, sticky = "news")
+        #grid = Frame 
         for c in range(self.row):
             self.answer_grid.append([])
             self.user_grid.append([])
@@ -139,7 +143,7 @@ class Squares_Game:
 root = tk.Tk()
 g = Squares_Game(root, 0, 0, 1, 3, [], [])
 root.mainloop()
-g.start()
+#g.start()
 
 
 
