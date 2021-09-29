@@ -16,7 +16,7 @@ class Squares_Game:
     def __init__ (self, master, row, col, lvl, lives, answer_grid, user_grid):
         ## GUI GRID STUFF
         self.master = master
-        master.title("A simple GUI")
+        master.title("Memory Squares")
         ## GAME BASED STUFF
         self.row = int(row)
         self.col = int(col)
@@ -39,28 +39,25 @@ class Squares_Game:
     ## Function to start the game
     def start (self):
         diff = input("Difficulty? ")
-        ## Easy
+        ## Easy (3x3)
         if (diff == "e"):
             self.row = 3
             self.col = 3
-        ## Medium
+        ## Medium (4x4)
         elif (diff == "m"):
             self.row = 4
             self.col = 4
-        ## Hard
+        ## Hard (5x5)
         elif (diff == "h"):
             self.row = 5
             self.col = 5
         return self.level_up()
 
     ##Create_grid: Creates a grid based on user inputs for rows and columns
+    ## Should create grid based on difficulty user selected
     def create_grid (self):
         self.answer_grid = []
         self.user_grid = []
-        #frame = tk.Frame(self.master)
-        #self.master.rowconfigure(0, weight = 1)
-        #self.master.columnconfigure(0, weight = 1)
-        #frame.grid(row = 0, column = 0, sticky = "news")
         #grid = Frame 
         for c in range(self.row):
             self.answer_grid.append([])
