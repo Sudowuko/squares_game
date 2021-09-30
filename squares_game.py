@@ -24,17 +24,8 @@ class Squares_Game:
         self.lives = int(lives)
         self.answer_grid = answer_grid 
         self.user_grid = user_grid 
-        ## GUI GRID STUFF
         self.start_button = tk.Button(master, text = "Start", command=self.start)
-        self.start_button.pack()
-        '''
-        button1 = tk.Button(self.master, text = "button1")
-            button1.grid(row=1, column = 0)
-            button2 = tk.Button(self.master, text = "button2")
-            button2.grid(row=2, column = 2)
-            button3 = tk.Button(self.master, text = "button3")
-            button3.grid(row=3, column = 0)
-        '''
+        self.start_button.grid(row = 0, column = 0)
 
     ## Function to start the game
     def start (self):
@@ -55,6 +46,7 @@ class Squares_Game:
 
     ##Create_grid: Creates a grid based on user inputs for rows and columns
     ## Should create grid based on difficulty user selected
+    ## Creates data values for the grid
     def create_grid (self):
         self.answer_grid = []
         self.user_grid = []
@@ -65,6 +57,16 @@ class Squares_Game:
             for r in range(self.col):
                 self.answer_grid[-1].append(0)
                 self.user_grid[-1].append(0)
+    
+    ## Creates the grid of buttons that the user will interact with
+    def create_grid_buttons(self):
+        for c in range(self.row):
+            ##this part is correct, it creates the column part
+            button1 = tk.Button(self.master, text = "button")
+            button1.grid(row = c, column = 0)
+            for r in range(self.col):
+                button1 = tk.Button(self.master, text = "button")
+                button1.grid(row = r, column = c)
 
     ## Randomize_grid: Changes the grid values from 0 to 1 based on level
     ## 1s represent the number you need to memorize for the game
@@ -124,6 +126,7 @@ class Squares_Game:
     def level_up (self):
         self.create_grid()
         self.randomize_grid()
+        self.create_grid_buttons()
         self.guess_squares()
     
     ## win_game: After the halfway point in the game, the user wins mainly because it doesn't get any more difficult, the colours just get flipped
@@ -136,6 +139,7 @@ class Squares_Game:
             print("You win")
             return True
         return False
+
 
 root = tk.Tk()
 g = Squares_Game(root, 0, 0, 1, 3, [], [])
