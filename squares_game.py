@@ -13,7 +13,7 @@ from random import randrange
 
 class Squares_Game:
 
-    def __init__ (self, master, row, col, lvl, lives, answer_grid, user_grid):
+    def __init__ (self, master, row, col, lvl, lives, answer_grid, user_grid, frameNames):
         ## GAME BASED STUFF
         self.row = int(row)
         self.col = int(col)
@@ -27,6 +27,7 @@ class Squares_Game:
         #self.frame.pack()
         self.start_button = tk.Button(master, text = "Start", command=self.start)
         self.start_button.grid(row = 0, column = 0)
+        self.frameNames = frameNames
 
     ## Function to start the game
     def start (self):
@@ -48,20 +49,23 @@ class Squares_Game:
     ##Create_grid: Creates a grid based on user inputs for rows and columns
     ## Should create grid based on difficulty user selected
     ## Creates data values for the grid
+    ## Current problem, Y values are being counted properly, find a way to properly count X
     def create_grid (self):
         self.answer_grid = []
         self.user_grid = []
-        #grid = Frame 
         for c in range(self.row):
             self.answer_grid.append([])
             self.user_grid.append([])
-            btn = tk.Button(self.master, text = "button", command = self.test_buttons)
-            btn.grid(row = c, column = 0)
             for r in range(self.col):
                 self.answer_grid[-1].append(0)
                 self.user_grid[-1].append(0)
-                btn = tk.Button(self.master, text = "button", command = self.test_buttons)
+                coord = str(c) + "X " + str(r) +"Y" 
+                btn = tk.Button(self.master, text = coord, command = self.test_buttons)
                 btn.grid(row = r, column = c)
+                self.frameNames.append(coord)
+        print(self.frameNames)
+    
+    ## Current steps: Create a function that will give each grid in the function unique frame names
     
     ## Creates the grid of buttons that the user will interact with
     ## Need to use a dictionary for the buttons to actually do something 
@@ -76,7 +80,6 @@ class Squares_Game:
                 btn = tk.Button(self.master, text = "button", command = self.test_buttons)
                 btn.grid(row = r, column = c)
     '''
-    
     
     def test_buttons(self):
         print("test")
@@ -156,7 +159,7 @@ class Squares_Game:
 root = tk.Tk()
 root.geometry('400x400')
 root.title("Memory Squares")
-app = Squares_Game(root, 0, 0, 1, 3, [], [])
+app = Squares_Game(root, 0, 0, 1, 3, [], [], [])
 root.mainloop()
 #g.start()
 
