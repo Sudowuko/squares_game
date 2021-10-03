@@ -14,18 +14,18 @@ from random import randrange
 class Squares_Game:
 
     def __init__ (self, master, row, col, lvl, lives, answer_grid, user_grid):
-        ## GUI GRID STUFF
-        self.master = master
-        master.title("Memory Squares")
         ## GAME BASED STUFF
         self.row = int(row)
         self.col = int(col)
         self.lvl = int(lvl)
         self.lives = int(lives)
         self.answer_grid = answer_grid 
+        ## GUI GRID STUFF
+        self.master = master
         self.user_grid = user_grid 
+        self.frame = tk.Frame(self.master)
+        self.frame.pack()
         self.start_button = tk.Button(master, text = "Start", command=self.start)
-        self.start_button.grid(row = 0, column = 0)
 
     ## Function to start the game
     def start (self):
@@ -59,14 +59,19 @@ class Squares_Game:
                 self.user_grid[-1].append(0)
     
     ## Creates the grid of buttons that the user will interact with
+    ## Need to use a dictionary for the buttons to actually do something 
     def create_grid_buttons(self):
+        btn_dict = {}
         for c in range(self.row):
             ##this part is correct, it creates the column part
-            button1 = tk.Button(self.master, text = "button")
-            button1.grid(row = c, column = 0)
+            btn = tk.Button(self.master, text = "button", command = self.test_buttons)
+            btn.grid(row = c, column = 0)
             for r in range(self.col):
-                button1 = tk.Button(self.master, text = "button")
-                button1.grid(row = r, column = c)
+                btn = tk.Button(self.master, text = "button", command = self.test_buttons)
+                btn.grid(row = r, column = c)
+    
+    def test_buttons(self):
+        print("test")
 
     ## Randomize_grid: Changes the grid values from 0 to 1 based on level
     ## 1s represent the number you need to memorize for the game
@@ -140,9 +145,10 @@ class Squares_Game:
             return True
         return False
 
-
 root = tk.Tk()
-g = Squares_Game(root, 0, 0, 1, 3, [], [])
+root.geometry('400x400')
+root.title("Memory Squares")
+app = Squares_Game(root, 0, 0, 1, 3, [], [])
 root.mainloop()
 #g.start()
 
