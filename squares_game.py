@@ -14,12 +14,12 @@ from functools import partial
 
 class Squares_Game:
 
-    def __init__ (self, master, row, col, lvl, lives, answer_grid, user_grid, buttons):
+    def __init__ (self, master, answer_grid, user_grid, buttons):
         ## GAME BASED STUFF
-        self.row = int(row)
-        self.col = int(col)
-        self.lvl = int(lvl)
-        self.lives = int(lives)
+        self.row = 0
+        self.col = 0
+        self.lvl = 1
+        self.lives = 3
         self.answer_grid = answer_grid 
         ## GUI GRID STUFF
         self.master = master
@@ -146,7 +146,7 @@ class Squares_Game:
 root = tk.Tk()
 root.geometry('400x400')
 root.title("Memory Squares")
-app = Squares_Game(root, 0, 0, 1, 3, [], [], {})
+app = Squares_Game(root, [], [], {})
 root.mainloop()
 #g.start()
 
