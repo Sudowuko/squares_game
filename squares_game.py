@@ -23,9 +23,10 @@ class Squares_Game:
         ## GUI GRID STUFF
         self.master = master
         self.user_grid = user_grid 
-        self.frame = tk.Frame(self.master)
-        self.frame.pack()
+        #self.frame = tk.Frame(self.master)
+        #self.frame.pack()
         self.start_button = tk.Button(master, text = "Start", command=self.start)
+        self.start_button.grid(row = 0, column = 0)
 
     ## Function to start the game
     def start (self):
@@ -54,12 +55,17 @@ class Squares_Game:
         for c in range(self.row):
             self.answer_grid.append([])
             self.user_grid.append([])
+            btn = tk.Button(self.master, text = "button", command = self.test_buttons)
+            btn.grid(row = c, column = 0)
             for r in range(self.col):
                 self.answer_grid[-1].append(0)
                 self.user_grid[-1].append(0)
+                btn = tk.Button(self.master, text = "button", command = self.test_buttons)
+                btn.grid(row = r, column = c)
     
     ## Creates the grid of buttons that the user will interact with
     ## Need to use a dictionary for the buttons to actually do something 
+    '''
     def create_grid_buttons(self):
         btn_dict = {}
         for c in range(self.row):
@@ -69,6 +75,8 @@ class Squares_Game:
             for r in range(self.col):
                 btn = tk.Button(self.master, text = "button", command = self.test_buttons)
                 btn.grid(row = r, column = c)
+    '''
+    
     
     def test_buttons(self):
         print("test")
@@ -131,7 +139,7 @@ class Squares_Game:
     def level_up (self):
         self.create_grid()
         self.randomize_grid()
-        self.create_grid_buttons()
+      #  self.create_grid_buttons()
         self.guess_squares()
     
     ## win_game: After the halfway point in the game, the user wins mainly because it doesn't get any more difficult, the colours just get flipped
