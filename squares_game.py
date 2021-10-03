@@ -10,10 +10,11 @@
 ## Using the Tkinter library to build the GUI
 import tkinter as tk
 from random import randrange
+from functools import partial
 
 class Squares_Game:
 
-    def __init__ (self, master, row, col, lvl, lives, answer_grid, user_grid, frameNames):
+    def __init__ (self, master, row, col, lvl, lives, answer_grid, user_grid, buttons):
         ## GAME BASED STUFF
         self.row = int(row)
         self.col = int(col)
@@ -23,11 +24,9 @@ class Squares_Game:
         ## GUI GRID STUFF
         self.master = master
         self.user_grid = user_grid 
-        #self.frame = tk.Frame(self.master)
-        #self.frame.pack()
         self.start_button = tk.Button(master, text = "Start", command=self.start)
         self.start_button.grid(row = 0, column = 0)
-        self.frameNames = frameNames
+        self.buttons = buttons
 
     ## Function to start the game
     def start (self):
@@ -49,7 +48,6 @@ class Squares_Game:
     ##Create_grid: Creates a grid based on user inputs for rows and columns
     ## Should create grid based on difficulty user selected
     ## Creates data values for the grid
-    ## Current problem, Y values are being counted properly, find a way to properly count X
     def create_grid (self):
         self.answer_grid = []
         self.user_grid = []
@@ -60,29 +58,16 @@ class Squares_Game:
                 self.answer_grid[-1].append(0)
                 self.user_grid[-1].append(0)
                 coord = str(c) + "X " + str(r) +"Y" 
-                btn = tk.Button(self.master, text = coord, command = self.test_buttons)
+                coords = [c, r]
+                action_with_arg = partial(self.test_buttons, coords)
+                btn = tk.Button(self.master, text = coord, command = action_with_arg)
                 btn.grid(row = r, column = c)
-                self.frameNames.append(coord)
-        print(self.frameNames)
+                self.buttons[c , r] = btn
     
-    ## Current steps: Create a function that will give each grid in the function unique frame names
-    
-    ## Creates the grid of buttons that the user will interact with
-    ## Need to use a dictionary for the buttons to actually do something 
-    '''
-    def create_grid_buttons(self):
-        btn_dict = {}
-        for c in range(self.row):
-            ##this part is correct, it creates the column part
-            btn = tk.Button(self.master, text = "button", command = self.test_buttons)
-            btn.grid(row = c, column = 0)
-            for r in range(self.col):
-                btn = tk.Button(self.master, text = "button", command = self.test_buttons)
-                btn.grid(row = r, column = c)
-    '''
-    
-    def test_buttons(self):
-        print("test")
+    def test_buttons(self, coords):
+        print(coords)
+        btn = self.buttons[coords[0], coords[1]]
+        btn.config(text = "A")
 
     ## Randomize_grid: Changes the grid values from 0 to 1 based on level
     ## 1s represent the number you need to memorize for the game
@@ -97,6 +82,7 @@ class Squares_Game:
         print(self.answer_grid)
     
     ## guess_squares: This is where the user guesses which squares 1s based on the randomized grid
+    ## Current Issue: Game should now no longer require user text input, should only be done through clicking
     def guess_squares (self):
         points = 0
         correct_coords = []
@@ -108,6 +94,8 @@ class Squares_Game:
                 print("Coordinate out of range, try again")
                 continue
             guess_coord = [guess_x, guess_y]
+            btn = self.buttons[guess_y, guess_x]
+            btn.config(text = "CHECK")
             if (guess_coord in correct_coords):
                 print("You already guessed this correctly, try again")
             ## Correct guess
@@ -142,7 +130,6 @@ class Squares_Game:
     def level_up (self):
         self.create_grid()
         self.randomize_grid()
-      #  self.create_grid_buttons()
         self.guess_squares()
     
     ## win_game: After the halfway point in the game, the user wins mainly because it doesn't get any more difficult, the colours just get flipped
@@ -159,7 +146,7 @@ class Squares_Game:
 root = tk.Tk()
 root.geometry('400x400')
 root.title("Memory Squares")
-app = Squares_Game(root, 0, 0, 1, 3, [], [], [])
+app = Squares_Game(root, 0, 0, 1, 3, [], [], {})
 root.mainloop()
 #g.start()
 
