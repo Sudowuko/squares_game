@@ -27,15 +27,20 @@ class Squares_Game:
         self.start_button = tk.Button(master, text = "Start", command=self.start)
         self.start_button.grid(row = 0, column = 0)
         self.buttons = buttons
+        self.reset_button = tk.Button(master, text = "Resetttttttttttttt", command=self.reset_grid)
+        self.reset_button.grid(row = 1, column = 0)
+        self.buttons = buttons
 
     ## Function to start the game
     def start (self):
-        diff = input("Difficulty? ")
+       # diff = input("Difficulty? ")
+       # self.easy_button = tk.Button(self.master, text = "EASY")
         ## Easy (3x3)
-        if (diff == "e"):
-            self.row = 3
-            self.col = 3
+       # if (diff == "e"):
+        self.row = 3
+        self.col = 3
         ## Medium (4x4)
+        '''
         elif (diff == "m"):
             self.row = 4
             self.col = 4
@@ -43,6 +48,7 @@ class Squares_Game:
         elif (diff == "h"):
             self.row = 5
             self.col = 5
+        '''
         return self.level_up()
 
     ##Create_grid: Creates a grid based on user inputs for rows and columns
@@ -63,19 +69,6 @@ class Squares_Game:
                 btn = tk.Button(self.master, text = 'BLANK', command = action_with_arg)
                 btn.grid(row = r, column = c)
                 self.buttons[c , r] = btn
-
-    ## Should reset and delete all the extra buttons once the user levels up 
-    ## Currently not tested
-    def reset_grid (self):
-        for key in self.buttons:
-            key.grid_forget()
-            print()
-        print()
-
-    def test_buttons(self, coords):
-        print(coords)
-        btn = self.buttons[coords[0], coords[1]]
-        btn.config(text = "A")
 
     ## Randomize_grid: Changes the grid values from 0 to 1 based on level
     ## 1s represent the number you need to memorize for the game
@@ -102,8 +95,6 @@ class Squares_Game:
             if (guess_x >= self.col or guess_y >= self.row):
                 print("Coordinate out of range, try again")
             guess_coord = [guess_x, guess_y]
-            #btn = self.buttons[guess_y, guess_x]
-            #btn.config(text = "CHECK")
             if (guess_coord in correct_coords):
                 print("You already guessed this correctly, try again")
             ## Correct guess
@@ -128,6 +119,7 @@ class Squares_Game:
             ## Winning condition
             if (self.win_game()):
                 return True
+            
             return self.level_up()
         ## If they used up all their lives they lose the game
         if (self.lives == 0):
@@ -136,59 +128,28 @@ class Squares_Game:
             print("Answer grid ", self.answer_grid)
             return False
     
-    ##Backup guess function (DELETE LATER)
-    '''
-      def guess_squares (self, user_coords):
-        btn = self.buttons[user_coords[0], user_coords[1]]
-        points = 0
-        correct_coords = []
-        while (points != self.lvl and self.lives > 0):
-            ## User guess
-            guess_y = int(input("X Coord "))
-            guess_x = int(input("Y Coord "))
-            if (guess_x >= self.col or guess_y >= self.row):
-                print("Coordinate out of range, try again")
-                continue
-            guess_coord = [guess_x, guess_y]
-            btn = self.buttons[guess_y, guess_x]
-            btn.config(text = "CHECK")
-            if (guess_coord in correct_coords):
-                print("You already guessed this correctly, try again")
-            ## Correct guess
-            elif ((self.answer_grid[guess_x][guess_y]) == 1):
-                (self.user_grid[guess_x][guess_y]) = 1
-                points += 1
-                correct_coords.append([guess_x, guess_y])
-                print("You guessed correct, keep going")
-                print("current grid ", self.user_grid)
-            ## Incorrect guess
-            else:
-                print("Incorrect, try again")
-                self.lives -= 1
-        correct_coords = []
-        ## If the user got everything right, they level up 
-        if (points == self.lvl):
-            print("Moving to next level")
-            points = 0
-            self.lvl += 1
-            ## Winning condition
-            if (self.win_game()):
-                return True
-            return self.level_up()
-        ## If they used up all their lives they lose the game
-        else:
-            print("Game over")
-            print("Your Grid ", self.user_grid)
-            print("Answer grid ", self.answer_grid)
-            return False
-    '''
-            
+ 
+    ## Should reset and delete all the extra buttons once the user levels up 
+    ## Currently not tested
+    ## Maybe don't delete and recreate the buttons all over again, just reset it so that so you don't create new buttons every single time
+    def reset_grid (self):
+        self.answer_grid = []
+        self.user_grid = []
+        for c in range(self.row):
+            for r in range(self.col):
+               # coord = str(c) + "X " + str(r) +"Y" 
+                coords = [c, r]
+               # action_with_arg = partial(self.guess_squares, coords)
+                btn = self.buttons[coords[0], coords[1]]
+                btn.config(text = "BLANK")
+
+
      ## Steps that allow you to move to the next level
     def level_up (self):
         self.create_grid()
         self.randomize_grid()
-        #self.guess_squares()
     
+
     ## win_game: After the halfway point in the game, the user wins mainly because it doesn't get any more difficult, the colours just get flipped
     ##          This is more efficient than just waiting until the squares change colour 
     def win_game (self):
