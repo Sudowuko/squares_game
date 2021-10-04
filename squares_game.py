@@ -19,7 +19,7 @@ class Squares_Game:
         self.row = 0
         self.col = 0
         self.lvl = 1
-        self.lives = 3
+        self.lives = 10
         self.answer_grid = answer_grid 
         ## GUI GRID STUFF
         self.master = master
@@ -57,13 +57,21 @@ class Squares_Game:
             for r in range(self.col):
                 self.answer_grid[-1].append(0)
                 self.user_grid[-1].append(0)
-                coord = str(c) + "X " + str(r) +"Y" 
+               # coord = str(c) + "X " + str(r) +"Y" 
                 coords = [c, r]
-                action_with_arg = partial(self.test_buttons, coords)
-                btn = tk.Button(self.master, text = coord, command = action_with_arg)
+                action_with_arg = partial(self.guess_squares, coords)
+                btn = tk.Button(self.master, text = 'BLANK', command = action_with_arg)
                 btn.grid(row = r, column = c)
                 self.buttons[c , r] = btn
-    
+
+    ## Should reset and delete all the extra buttons once the user levels up 
+    ## Currently not tested
+    def reset_grid (self):
+        for key in self.buttons:
+            key.grid_forget()
+            print()
+        print()
+
     def test_buttons(self, coords):
         print(coords)
         btn = self.buttons[coords[0], coords[1]]
@@ -80,10 +88,58 @@ class Squares_Game:
                 (self.answer_grid[rand_x][rand_y]) = 1
                 start_lvl += 1
         print(self.answer_grid)
-    
+
     ## guess_squares: This is where the user guesses which squares 1s based on the randomized grid
     ## Current Issue: Game should now no longer require user text input, should only be done through clicking
-    def guess_squares (self):
+    def guess_squares (self, user_coords):
+        btn = self.buttons[user_coords[0], user_coords[1]]
+        points = 0
+        correct_coords = []
+        if (points != self.lvl and self.lives > 0):
+            ## User guess
+            guess_y = user_coords[0]
+            guess_x = user_coords[1]
+            if (guess_x >= self.col or guess_y >= self.row):
+                print("Coordinate out of range, try again")
+            guess_coord = [guess_x, guess_y]
+            #btn = self.buttons[guess_y, guess_x]
+            #btn.config(text = "CHECK")
+            if (guess_coord in correct_coords):
+                print("You already guessed this correctly, try again")
+            ## Correct guess
+            elif ((self.answer_grid[guess_x][guess_y]) == 1):
+                (self.user_grid[guess_x][guess_y]) = 1
+                points += 1
+                correct_coords.append([guess_x, guess_y])
+                print("You guessed correct, keep going")
+                print("current grid ", self.user_grid)
+                btn.config(text = "CORRECT")
+            ## Incorrect guess
+            else:
+                print("Incorrect, try again")
+                btn.config(text = "WRONG")
+                self.lives -= 1
+        correct_coords = []
+        ## If the user got everything right, they level up 
+        if (points == self.lvl):
+            print("Moving to next level")
+            points = 0
+            self.lvl += 1
+            ## Winning condition
+            if (self.win_game()):
+                return True
+            return self.level_up()
+        ## If they used up all their lives they lose the game
+        if (self.lives == 0):
+            print("Game over")
+            print("Your Grid ", self.user_grid)
+            print("Answer grid ", self.answer_grid)
+            return False
+    
+    ##Backup guess function (DELETE LATER)
+    '''
+      def guess_squares (self, user_coords):
+        btn = self.buttons[user_coords[0], user_coords[1]]
         points = 0
         correct_coords = []
         while (points != self.lvl and self.lives > 0):
@@ -125,12 +181,13 @@ class Squares_Game:
             print("Your Grid ", self.user_grid)
             print("Answer grid ", self.answer_grid)
             return False
+    '''
             
      ## Steps that allow you to move to the next level
     def level_up (self):
         self.create_grid()
         self.randomize_grid()
-        self.guess_squares()
+        #self.guess_squares()
     
     ## win_game: After the halfway point in the game, the user wins mainly because it doesn't get any more difficult, the colours just get flipped
     ##          This is more efficient than just waiting until the squares change colour 
