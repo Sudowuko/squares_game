@@ -27,9 +27,6 @@ class Squares_Game:
         self.start_button = tk.Button(master, text = "Start", command=self.start)
         self.start_button.grid(row = 0, column = 0)
         self.buttons = buttons
-        self.reset_button = tk.Button(master, text = "Resetttttttttttttt", command=self.reset_grid)
-        self.reset_button.grid(row = 1, column = 0)
-        self.buttons = buttons
 
     ## Function to start the game
     def start (self):
@@ -80,7 +77,7 @@ class Squares_Game:
             if ((self.answer_grid[rand_x][rand_y]) == 0):
                 (self.answer_grid[rand_x][rand_y]) = 1
                 start_lvl += 1
-        print(self.answer_grid)
+        print("Answer: ", self.answer_grid)
 
     ## guess_squares: This is where the user guesses which squares 1s based on the randomized grid
     ## Current Issue: Game should now no longer require user text input, should only be done through clicking
@@ -92,10 +89,10 @@ class Squares_Game:
             ## User guess
             guess_y = user_coords[0]
             guess_x = user_coords[1]
+            guess_coord = [guess_x, guess_y]
             if (guess_x >= self.col or guess_y >= self.row):
                 print("Coordinate out of range, try again")
-            guess_coord = [guess_x, guess_y]
-            if (guess_coord in correct_coords):
+            elif (guess_coord in correct_coords):
                 print("You already guessed this correctly, try again")
             ## Correct guess
             elif ((self.answer_grid[guess_x][guess_y]) == 1):
@@ -112,14 +109,14 @@ class Squares_Game:
                 self.lives -= 1
         correct_coords = []
         ## If the user got everything right, they level up 
-        if (points == self.lvl):
+        if (points >= self.lvl):
             print("Moving to next level")
             points = 0
             self.lvl += 1
+            self.reset_grid()
             ## Winning condition
             if (self.win_game()):
                 return True
-            
             return self.level_up()
         ## If they used up all their lives they lose the game
         if (self.lives == 0):
@@ -133,8 +130,6 @@ class Squares_Game:
     ## Currently not tested
     ## Maybe don't delete and recreate the buttons all over again, just reset it so that so you don't create new buttons every single time
     def reset_grid (self):
-        self.answer_grid = []
-        self.user_grid = []
         for c in range(self.row):
             for r in range(self.col):
                # coord = str(c) + "X " + str(r) +"Y" 
