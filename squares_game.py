@@ -30,22 +30,29 @@ class Squares_Game:
 
     ## Function to start the game
     def start (self):
-       # diff = input("Difficulty? ")
-       # self.easy_button = tk.Button(self.master, text = "EASY")
-        ## Easy (3x3)
-       # if (diff == "e"):
+       # action_with_arg = partial(self.set_diff, coords)
+        easy_btn = tk.Button(self.master, text = "EASY", command = self.easy)
+        easy_btn.grid(row = 0, column = 0)
+        med_btn = tk.Button(self.master, text = "MEDIUM", command = self.medium)
+        med_btn.grid(row = 1, column = 0)
+        hard_btn = tk.Button(self.master, text = "HARD", command = self.hard)
+        hard_btn.grid(row = 2, column = 0)
+    
+    ## Difficulty Functions
+
+    def easy (self):
         self.row = 3
         self.col = 3
-        ## Medium (4x4)
-        '''
-        elif (diff == "m"):
-            self.row = 4
-            self.col = 4
-        ## Hard (5x5)
-        elif (diff == "h"):
-            self.row = 5
-            self.col = 5
-        '''
+        return self.level_up()
+    
+    def medium (self):
+        self.row = 4
+        self.col = 4
+        return self.level_up()
+    
+    def hard (self):
+        self.row = 5
+        self.col = 5
         return self.level_up()
 
     ##Create_grid: Creates a grid based on user inputs for rows and columns
