@@ -43,17 +43,20 @@ class Squares_Game:
     def easy (self):
         self.row = 3
         self.col = 3
-        return self.level_up()
+        self.create_grid()
+        return self.randomize_grid()
     
     def medium (self):
         self.row = 4
         self.col = 4
-        return self.level_up()
+        self.create_grid()
+        return self.randomize_grid()
     
     def hard (self):
         self.row = 5
         self.col = 5
-        return self.level_up()
+        self.create_grid()
+        return self.randomize_grid()
 
     ##Create_grid: Creates a grid based on user inputs for rows and columns
     ## Should create grid based on difficulty user selected
@@ -77,6 +80,7 @@ class Squares_Game:
     ## Randomize_grid: Changes the grid values from 0 to 1 based on level
     ## 1s represent the number you need to memorize for the game
     def randomize_grid (self):
+        self.create_grid()
         start_lvl = 0
         while (start_lvl != self.lvl):
             rand_y = randrange(self.row)
@@ -124,10 +128,11 @@ class Squares_Game:
             ## Winning condition
             if (self.win_game()):
                 return True
-            return self.level_up()
+            return self.randomize_grid
         ## If they used up all their lives they lose the game
         if (self.lives == 0):
             print("Game over")
+            print("Level: ", self.lvl)
             print("Your Grid ", self.user_grid)
             print("Answer grid ", self.answer_grid)
             return False
@@ -137,6 +142,7 @@ class Squares_Game:
     ## Currently not tested
     ## Maybe don't delete and recreate the buttons all over again, just reset it so that so you don't create new buttons every single time
     def reset_grid (self):
+        self.create_grid()
         for c in range(self.row):
             for r in range(self.col):
                # coord = str(c) + "X " + str(r) +"Y" 
@@ -144,13 +150,7 @@ class Squares_Game:
                # action_with_arg = partial(self.guess_squares, coords)
                 btn = self.buttons[coords[0], coords[1]]
                 btn.config(text = "BLANK")
-
-
-     ## Steps that allow you to move to the next level
-    def level_up (self):
-        self.create_grid()
-        self.randomize_grid()
-    
+                btn.forget()    
 
     ## win_game: After the halfway point in the game, the user wins mainly because it doesn't get any more difficult, the colours just get flipped
     ##          This is more efficient than just waiting until the squares change colour 
