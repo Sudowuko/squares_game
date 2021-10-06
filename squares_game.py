@@ -34,29 +34,29 @@ class Squares_Game:
     ## Function to start the game
     def start (self):
         easy_btn = tk.Button(self.master, text = "EASY", command = self.easy)
-        easy_btn.grid(row = 0, column = 0)
+        easy_btn.grid(row = 0, column = 1)
         med_btn = tk.Button(self.master, text = "MEDIUM", command = self.medium)
-        med_btn.grid(row = 1, column = 0)
+        med_btn.grid(row = 0, column = 1)
         hard_btn = tk.Button(self.master, text = "HARD", command = self.hard)
-        hard_btn.grid(row = 2, column = 0)
+        hard_btn.grid(row = 0, column = 2)
     
     ## Difficulty Functions
 
     def easy (self):
-        self.row = 3
-        self.col = 3
+        self.row = 5
+        self.col = 5
         self.create_grid()
         return self.randomize_grid()
     
     def medium (self):
-        self.row = 4
-        self.col = 4
+        self.row = 6
+        self.col = 6
         self.create_grid()
         return self.randomize_grid()
     
     def hard (self):
-        self.row = 5
-        self.col = 5
+        self.row = 6
+        self.col = 6
         self.create_grid()
         return self.randomize_grid()
 
@@ -74,8 +74,8 @@ class Squares_Game:
                 self.user_grid[-1].append(0)
                 coords = [c, r]
                 action_with_arg = partial(self.guess_squares, coords)
-                btn = tk.Button(self.master, text = 'BLANK', command = action_with_arg)
-                btn.grid(row = r, column = c)
+                btn = tk.Button(self.master, bg = "black", command = action_with_arg)
+                btn.grid(row = r + 1, column = c)
                 self.buttons[c , r] = btn
 
     ## Randomize_grid: Changes the grid values from 0 to 1 based on level
@@ -109,11 +109,11 @@ class Squares_Game:
                 correct_coords.append([guess_x, guess_y])
                 print("You guessed correct, keep going")
                 print("current grid ", self.user_grid)
-                btn.config(text = "CORRECT")
+                btn.config(bg = "white")
             ## Incorrect guess
             else:
                 print("Incorrect, try again")
-                btn.config(text = "WRONG")
+                btn.config(bg = "red")
                 self.lives -= 1
         correct_coords = []
         ## If the user got everything right, they level up 
@@ -166,6 +166,8 @@ class Squares_Game:
 root = tk.Tk()
 root.geometry('400x400')
 root.title("Memory Squares")
+root.columnconfigure(0, weight = 1)
+root.rowconfigure(0, weight = 1)
 app = Squares_Game(root, [], [], {})
 root.mainloop()
 #g.start()
