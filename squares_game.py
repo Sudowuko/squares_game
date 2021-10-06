@@ -8,7 +8,7 @@
 ##    Figure out the correct path the game needs to follow
 ## Order I want:
 ## Before User Clicks: Create Grid -> Randomize Grid
-## GWhile User Clicks: uess -> Reset -> Create Grid -> Randomize Grid
+## GWhile User Clicks: Guess -> Reset -> Create Grid -> Randomize Grid
 
 import tkinter as tk
 from random import randrange
@@ -22,6 +22,7 @@ class Squares_Game:
         self.col = 0
         self.lvl = 1
         self.lives = 10
+        self.points = 0
         self.answer_grid = answer_grid 
         ## GUI GRID STUFF
         self.master = master
@@ -80,7 +81,6 @@ class Squares_Game:
     ## Randomize_grid: Changes the grid values from 0 to 1 based on level
     ## 1s represent the number you need to memorize for the game
     def randomize_grid (self):
-        self.create_grid()
         start_lvl = 0
         while (start_lvl != self.lvl):
             rand_y = randrange(self.row)
@@ -94,9 +94,8 @@ class Squares_Game:
     ## Current Issue: Game should now no longer require user text input, should only be done through clicking
     def guess_squares (self, user_coords):
         btn = self.buttons[user_coords[0], user_coords[1]]
-        points = 0
         correct_coords = []
-        if (points != self.lvl and self.lives > 0):
+        if (self.points != self.lvl and self.lives > 0):
             ## User guess
             guess_y = user_coords[0]
             guess_x = user_coords[1]
@@ -106,7 +105,7 @@ class Squares_Game:
             ## Correct guess
             elif ((self.answer_grid[guess_x][guess_y]) == 1):
                 (self.user_grid[guess_x][guess_y]) = 1
-                points += 1
+                self.points += 1
                 correct_coords.append([guess_x, guess_y])
                 print("You guessed correct, keep going")
                 print("current grid ", self.user_grid)
@@ -118,20 +117,21 @@ class Squares_Game:
                 self.lives -= 1
         correct_coords = []
         ## If the user got everything right, they level up 
-        if (points >= self.lvl):
+        if (self.points >= self.lvl):
             print("Moving to next level")
-            points = 0
+            self.points = 0
             self.lvl += 1
             self.reset_grid()
             ## Winning condition
             if (self.win_game()):
                 print("YOU WIN")
                 return True
-            return self.randomize_grid
+            self.reset_grid()
         ## If they used up all their lives they lose the game
         if (self.lives == 0):
             print("Game over")
             print("Level: ", self.lvl)
+            print("Points: ", self.points)
             print("Your Grid ", self.user_grid)
             print("Answer grid ", self.answer_grid)
             return False
@@ -141,7 +141,6 @@ class Squares_Game:
     ## Currently not tested
     ## Maybe don't delete and recreate the buttons all over again, just reset it so that so you don't create new buttons every single time
     def reset_grid (self):
-        self.create_grid()
         for c in range(self.row):
             for r in range(self.col):
                # coord = str(c) + "X " + str(r) +"Y" 
@@ -149,7 +148,9 @@ class Squares_Game:
                # action_with_arg = partial(self.guess_squares, coords)
                 btn = self.buttons[coords[0], coords[1]]
                 btn.config(text = "BLANK")
-                btn.forget()    
+                btn.destroy()
+        self.create_grid()
+        self.randomize_grid()
 
     ## win_game: After the halfway point in the game, the user wins mainly because it doesn't get any more difficult, the colours just get flipped
     ##          This is more efficient than just waiting until the squares change colour 
