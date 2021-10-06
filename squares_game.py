@@ -5,9 +5,11 @@
 ## I.e. Row = y, Col = x
 
 ## Current steps: 
-##    Figure out how to put Tkinter functions directly into the class
+##    Figure out the correct path the game needs to follow
+## Order I want:
+## Before User Clicks: Create Grid -> Randomize Grid
+## GWhile User Clicks: uess -> Reset -> Create Grid -> Randomize Grid
 
-## Using the Tkinter library to build the GUI
 import tkinter as tk
 from random import randrange
 from functools import partial
@@ -30,7 +32,6 @@ class Squares_Game:
 
     ## Function to start the game
     def start (self):
-       # action_with_arg = partial(self.set_diff, coords)
         easy_btn = tk.Button(self.master, text = "EASY", command = self.easy)
         easy_btn.grid(row = 0, column = 0)
         med_btn = tk.Button(self.master, text = "MEDIUM", command = self.medium)
@@ -70,7 +71,6 @@ class Squares_Game:
             for r in range(self.col):
                 self.answer_grid[-1].append(0)
                 self.user_grid[-1].append(0)
-               # coord = str(c) + "X " + str(r) +"Y" 
                 coords = [c, r]
                 action_with_arg = partial(self.guess_squares, coords)
                 btn = tk.Button(self.master, text = 'BLANK', command = action_with_arg)
@@ -101,9 +101,7 @@ class Squares_Game:
             guess_y = user_coords[0]
             guess_x = user_coords[1]
             guess_coord = [guess_x, guess_y]
-            if (guess_x >= self.col or guess_y >= self.row):
-                print("Coordinate out of range, try again")
-            elif (guess_coord in correct_coords):
+            if (guess_coord in correct_coords):
                 print("You already guessed this correctly, try again")
             ## Correct guess
             elif ((self.answer_grid[guess_x][guess_y]) == 1):
@@ -127,6 +125,7 @@ class Squares_Game:
             self.reset_grid()
             ## Winning condition
             if (self.win_game()):
+                print("YOU WIN")
                 return True
             return self.randomize_grid
         ## If they used up all their lives they lose the game
