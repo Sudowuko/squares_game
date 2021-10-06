@@ -1,14 +1,6 @@
 ## To make it easier to start, make it text based
-## 0 is a white square
-## 1 is black square
 ## Array[Row][Col] = Array[y][x]
 ## I.e. Row = y, Col = x
-
-## Current steps: 
-##    Figure out the correct path the game needs to follow
-## Order I want:
-## Before User Clicks: Create Grid -> Randomize Grid
-## GWhile User Clicks: Guess -> Reset -> Create Grid -> Randomize Grid
 
 import tkinter as tk
 from random import randrange
@@ -27,19 +19,23 @@ class Squares_Game:
         ## GUI GRID STUFF
         self.master = master
         self.user_grid = user_grid 
-        self.start_button = tk.Button(master, text = "Start", command=self.start)
-        self.start_button.grid(row = 0, column = 0)
         self.buttons = buttons
 
-    ## Function to start the game
-    def start (self):
-        easy_btn = tk.Button(self.master, text = "EASY", command = self.easy)
-        easy_btn.grid(row = 0, column = 1)
-        med_btn = tk.Button(self.master, text = "MEDIUM", command = self.medium)
-        med_btn.grid(row = 0, column = 1)
-        hard_btn = tk.Button(self.master, text = "HARD", command = self.hard)
-        hard_btn.grid(row = 0, column = 2)
-    
+        ## Create all of the main containers
+
+        ## Layout all of the main containers
+
+        ## Create the widgets for the top frame
+
+        ## Layout the widgets in the top frame 
+
+        easy_btn = tk.Button(self.master, text = "Easy", command = self.easy)
+        easy_btn.grid(row = 0, column = 0, sticky = tk.EW, padx = 5, pady = 5)
+        med_btn = tk.Button(self.master, text = "Med", command = self.medium)
+        med_btn.grid(row = 0, column = 1, sticky = tk.EW, padx = 5, pady = 5)
+        hard_btn = tk.Button(self.master, text = "Hard", command = self.hard)
+        hard_btn.grid(row = 0, column = 2, sticky = tk.EW, padx = 5, pady = 5)
+
     ## Difficulty Functions
 
     def easy (self):
@@ -75,7 +71,7 @@ class Squares_Game:
                 coords = [c, r]
                 action_with_arg = partial(self.guess_squares, coords)
                 btn = tk.Button(self.master, bg = "black", command = action_with_arg)
-                btn.grid(row = r + 1, column = c)
+                btn.grid(row = r + 1, column = c, padx=5, pady=5, sticky = tk.EW)
                 self.buttons[c , r] = btn
 
     ## Randomize_grid: Changes the grid values from 0 to 1 based on level
@@ -143,9 +139,7 @@ class Squares_Game:
     def reset_grid (self):
         for c in range(self.row):
             for r in range(self.col):
-               # coord = str(c) + "X " + str(r) +"Y" 
                 coords = [c, r]
-               # action_with_arg = partial(self.guess_squares, coords)
                 btn = self.buttons[coords[0], coords[1]]
                 btn.config(text = "BLANK")
                 btn.destroy()
@@ -156,8 +150,6 @@ class Squares_Game:
     ##          This is more efficient than just waiting until the squares change colour 
     def win_game (self):
         half_squares = int((self.row * self.col) / 2)
-        print("half", half_squares)
-        print("level", self.lvl)
         if (half_squares <= self.lvl):
             print("You win")
             return True
@@ -166,8 +158,14 @@ class Squares_Game:
 root = tk.Tk()
 root.geometry('400x400')
 root.title("Memory Squares")
-root.columnconfigure(0, weight = 1)
-root.rowconfigure(0, weight = 1)
+root.columnconfigure(0, weight=1)
+root.columnconfigure(1, weight=1)
+root.columnconfigure(2, weight=1)
+root.columnconfigure(3, weight=1)
+root.columnconfigure(4, weight=1)
+root.columnconfigure(5, weight=1)
+root.columnconfigure(6, weight=1)
+#root.rowconfigure(0, weight = 1)
 app = Squares_Game(root, [], [], {})
 root.mainloop()
 #g.start()
