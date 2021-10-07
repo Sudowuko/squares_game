@@ -22,18 +22,43 @@ class Squares_Game:
         self.buttons = buttons
 
         ## Create all of the main containers
-
+        self.top_frame = tk.Frame(self.master, bg='pink', width = 400, height = 90, pady = 5)
+        self.mid_frame = tk.Frame(self.master, bg='lavender', width = 400, height = 40, pady = 5)
+        self.bot_frame = tk.Frame(self.master, bg='cyan', width = 400, height = 240, pady = 5)
+        self.top_frame.grid(row=0, sticky = tk.EW)
+        self.mid_frame.grid(row=0, sticky = tk.EW)
+        self.bot_frame.grid(row=0, sticky = tk.EW)
         ## Layout all of the main containers
+        self.master.columnconfigure(0, weight=1)
+        self.master.rowconfigure(1, weight=1)
 
+        '''
+        self.frame1.columnconfigure(0, weight=1)
+        self.frame1.rowconfigure(1, weight=1)
+        self.frame2.columnconfigure(0, weight=1)
+        self.frame2.rowconfigure(1, weight=1)
+        self.frame3.columnconfigure(0, weight=1)
+        self.frame3.rowconfigure(1, weight=1)
+        '''
+        
         ## Create the widgets for the top frame
+        game_title = tk.Label(self.frame1, text='Memory Squares')
 
         ## Layout the widgets in the top frame 
 
-        easy_btn = tk.Button(self.master, text = "Easy", command = self.easy)
+        ## Create the widgets for the mid frame
+
+        ## Layout the widgets in the mid frame
+
+        ## Create the widgets in the bot frame
+
+        ## Layout the widgets in the bot frame
+
+        easy_btn = tk.Button(self.frame2, text = "Easy", command = self.easy)
         easy_btn.grid(row = 0, column = 0, sticky = tk.EW, padx = 5, pady = 5)
-        med_btn = tk.Button(self.master, text = "Med", command = self.medium)
+        med_btn = tk.Button(self.frame2, text = "Med", command = self.medium)
         med_btn.grid(row = 0, column = 1, sticky = tk.EW, padx = 5, pady = 5)
-        hard_btn = tk.Button(self.master, text = "Hard", command = self.hard)
+        hard_btn = tk.Button(self.frame2, text = "Hard", command = self.hard)
         hard_btn.grid(row = 0, column = 2, sticky = tk.EW, padx = 5, pady = 5)
 
     ## Difficulty Functions
@@ -158,6 +183,7 @@ class Squares_Game:
 root = tk.Tk()
 root.geometry('400x400')
 root.title("Memory Squares")
+'''
 root.columnconfigure(0, weight=1)
 root.columnconfigure(1, weight=1)
 root.columnconfigure(2, weight=1)
@@ -165,6 +191,8 @@ root.columnconfigure(3, weight=1)
 root.columnconfigure(4, weight=1)
 root.columnconfigure(5, weight=1)
 root.columnconfigure(6, weight=1)
+'''
+
 #root.rowconfigure(0, weight = 1)
 app = Squares_Game(root, [], [], {})
 root.mainloop()
