@@ -54,19 +54,19 @@ class Squares_Game:
         self.row = 5
         self.col = 5
         self.create_grid()
-        return self.randomize_grid()
+        self.randomize_grid()
     
     def medium (self):
         self.row = 6
         self.col = 6
         self.create_grid()
-        return self.randomize_grid()
+        self.randomize_grid()
     
     def hard (self):
-        self.row = 6
-        self.col = 6
+        self.row = 7
+        self.col = 7
         self.create_grid()
-        return self.randomize_grid()
+        self.randomize_grid()
 
     ##Create_grid: Creates a grid based on user inputs for rows and columns
     ## Should create grid based on difficulty user selected
@@ -98,9 +98,28 @@ class Squares_Game:
                 btn = self.buttons[rand_y,rand_x]
                 btn.config(bg = "purple")
                 start_lvl += 1
-            
         print("Answer: ", self.answer_grid)
+        self.waithere()
+        self.white_out()
+    
+    ## waithere: Potential delay function that will be used with whiteout
+    def waithere(self):
+        var = tk.IntVar()
+        self.master.after(3000, var.set, 1)
+        print("waiting...")
+      #  self.master.wait_variable(var)
 
+    ## white_out: changes the colour of each button to white without mutating the values
+    def white_out (self):
+      #  self.waithere()
+        for c in range(self.row):
+            for r in range(self.col):
+                coords = [c, r]
+                btn = self.buttons[coords[0], coords[1]]
+                btn.config(bg = "black")
+       # self.master.after(2000, self.randomize_grid())
+        #time.sleep(2)
+        
     ## guess_squares: This is where the user guesses which squares 1s based on the randomized grid
     ## Current Issue: Game should now no longer require user text input, should only be done through clicking
     def guess_squares (self, user_coords):
