@@ -29,8 +29,13 @@ class Squares_Game:
         self.mid_frame.grid(row=0, sticky = tk.EW)
         self.bot_frame.grid(row=0, sticky = tk.EW)
         ## Layout all of the main containers
-        self.master.columnconfigure(0, weight=1)
-        self.master.rowconfigure(1, weight=1)
+       # self.master.grid.columnconfigure(0, weight=1)
+       # self.master.rowconfigure(1, weight=1)
+        self.top_frame.grid(row = 0, sticky = tk.EW)
+        self.mid_frame.grid(row = 1, sticky = tk.EW)
+        self.bot_frame.grid(row = 2, sticky = tk.EW)
+
+
 
         '''
         self.frame1.columnconfigure(0, weight=1)
@@ -42,24 +47,26 @@ class Squares_Game:
         '''
         
         ## Create the widgets for the top frame
-        game_title = tk.Label(self.frame1, text='Memory Squares')
+        game_title = tk.Label(self.top_frame, text='Memory Squares')
 
         ## Layout the widgets in the top frame 
+        game_title.grid(row = 0, column = 0, sticky = tk.NSEW)
 
         ## Create the widgets for the mid frame
+        easy_btn = tk.Button(self.mid_frame, text = "Easy", command = self.easy)
+        med_btn = tk.Button(self.mid_frame, text = "Med", command = self.medium)
+        hard_btn = tk.Button(self.mid_frame, text = "Hard", command = self.hard)
 
         ## Layout the widgets in the mid frame
-
+        easy_btn.grid(row = 0, column = 0, sticky = tk.EW, padx = 5, pady = 5)
+        med_btn.grid(row = 0, column = 1, sticky = tk.EW, padx = 5, pady = 5)
+        hard_btn.grid(row = 0, column = 2, sticky = tk.EW, padx = 5, pady = 5)
+   
         ## Create the widgets in the bot frame
 
         ## Layout the widgets in the bot frame
 
-        easy_btn = tk.Button(self.frame2, text = "Easy", command = self.easy)
-        easy_btn.grid(row = 0, column = 0, sticky = tk.EW, padx = 5, pady = 5)
-        med_btn = tk.Button(self.frame2, text = "Med", command = self.medium)
-        med_btn.grid(row = 0, column = 1, sticky = tk.EW, padx = 5, pady = 5)
-        hard_btn = tk.Button(self.frame2, text = "Hard", command = self.hard)
-        hard_btn.grid(row = 0, column = 2, sticky = tk.EW, padx = 5, pady = 5)
+        
 
     ## Difficulty Functions
 
@@ -95,7 +102,7 @@ class Squares_Game:
                 self.user_grid[-1].append(0)
                 coords = [c, r]
                 action_with_arg = partial(self.guess_squares, coords)
-                btn = tk.Button(self.master, bg = "black", command = action_with_arg)
+                btn = tk.Button(self.bot_frame, bg = "black", command = action_with_arg)
                 btn.grid(row = r + 1, column = c, padx=5, pady=5, sticky = tk.EW)
                 self.buttons[c , r] = btn
 
