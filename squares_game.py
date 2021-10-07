@@ -5,6 +5,7 @@
 import tkinter as tk
 from random import randrange
 from functools import partial
+import time
 
 class Squares_Game:
 
@@ -25,26 +26,10 @@ class Squares_Game:
         self.top_frame = tk.Frame(self.master, bg='pink', width = 400, height = 90, pady = 5)
         self.mid_frame = tk.Frame(self.master, bg='lavender', width = 400, height = 40, pady = 5)
         self.bot_frame = tk.Frame(self.master, bg='cyan', width = 400, height = 240, pady = 5)
-        self.top_frame.grid(row=0, sticky = tk.EW)
-        self.mid_frame.grid(row=0, sticky = tk.EW)
-        self.bot_frame.grid(row=0, sticky = tk.EW)
         ## Layout all of the main containers
-       # self.master.grid.columnconfigure(0, weight=1)
-       # self.master.rowconfigure(1, weight=1)
         self.top_frame.grid(row = 0, sticky = tk.EW)
         self.mid_frame.grid(row = 1, sticky = tk.EW)
         self.bot_frame.grid(row = 2, sticky = tk.EW)
-
-
-
-        '''
-        self.frame1.columnconfigure(0, weight=1)
-        self.frame1.rowconfigure(1, weight=1)
-        self.frame2.columnconfigure(0, weight=1)
-        self.frame2.rowconfigure(1, weight=1)
-        self.frame3.columnconfigure(0, weight=1)
-        self.frame3.rowconfigure(1, weight=1)
-        '''
         
         ## Create the widgets for the top frame
         game_title = tk.Label(self.top_frame, text='Memory Squares')
@@ -61,13 +46,8 @@ class Squares_Game:
         easy_btn.grid(row = 0, column = 0, sticky = tk.EW, padx = 5, pady = 5)
         med_btn.grid(row = 0, column = 1, sticky = tk.EW, padx = 5, pady = 5)
         hard_btn.grid(row = 0, column = 2, sticky = tk.EW, padx = 5, pady = 5)
-   
-        ## Create the widgets in the bot frame
-
-        ## Layout the widgets in the bot frame
-
         
-
+ 
     ## Difficulty Functions
 
     def easy (self):
@@ -115,7 +95,10 @@ class Squares_Game:
             rand_x = randrange(self.col)
             if ((self.answer_grid[rand_x][rand_y]) == 0):
                 (self.answer_grid[rand_x][rand_y]) = 1
+                btn = self.buttons[rand_y,rand_x]
+                btn.config(bg = "purple")
                 start_lvl += 1
+            
         print("Answer: ", self.answer_grid)
 
     ## guess_squares: This is where the user guesses which squares 1s based on the randomized grid
@@ -149,7 +132,6 @@ class Squares_Game:
             print("Moving to next level")
             self.points = 0
             self.lvl += 1
-            self.reset_grid()
             ## Winning condition
             if (self.win_game()):
                 print("YOU WIN")
