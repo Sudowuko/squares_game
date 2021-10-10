@@ -7,7 +7,7 @@ from random import randrange
 from functools import partial
 import time
 
-class Squares_Game:
+class SquaresGame:
 
     def __init__ (self, master, answer_grid, user_grid, buttons):
         ## GAME BASED STUFF
@@ -50,19 +50,19 @@ class Squares_Game:
  
     ## Difficulty Functions
 
-    def easy (self):
+    def easy(self):
         self.row = 5
         self.col = 5
         self.create_grid()
         self.randomize_grid()
     
-    def medium (self):
+    def medium(self):
         self.row = 6
         self.col = 6
         self.create_grid()
         self.randomize_grid()
     
-    def hard (self):
+    def hard(self):
         self.row = 7
         self.col = 7
         self.create_grid()
@@ -94,20 +94,18 @@ class Squares_Game:
             rand_y = randrange(self.row)
             rand_x = randrange(self.col)
             if ((self.answer_grid[rand_x][rand_y]) == 0):
-                (self.answer_grid[rand_x][rand_y]) = 1
+                self.answer_grid[rand_x][rand_y] = 1
                 btn = self.buttons[rand_y,rand_x]
                 btn.config(bg = "purple")
                 start_lvl += 1
         print("Answer: ", self.answer_grid)
         self.waithere()
-        self.white_out()
+       # self.white_out()
     
     ## waithere: Potential delay function that will be used with whiteout
     def waithere(self):
-        var = tk.IntVar()
-        self.master.after(3000, var.set, 1)
+        self.master.after(3000, self.white_out)
         print("waiting...")
-      #  self.master.wait_variable(var)
 
     ## white_out: changes the colour of each button to white without mutating the values
     def white_out (self):
@@ -202,7 +200,7 @@ root.columnconfigure(6, weight=1)
 '''
 
 #root.rowconfigure(0, weight = 1)
-app = Squares_Game(root, [], [], {})
+app = SquaresGame(root, [], [], {})
 root.mainloop()
 #g.start()
 
