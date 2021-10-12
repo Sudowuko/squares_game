@@ -5,7 +5,6 @@
 import tkinter as tk
 from random import randrange
 from functools import partial
-import time
 
 class SquaresGame:
 
@@ -100,7 +99,6 @@ class SquaresGame:
                 start_lvl += 1
         print("Answer: ", self.answer_grid)
         self.waithere()
-       # self.white_out()
     
     ## waithere: Potential delay function that will be used with whiteout
     def waithere(self):
@@ -109,14 +107,11 @@ class SquaresGame:
 
     ## white_out: changes the colour of each button to white without mutating the values
     def white_out (self):
-      #  self.waithere()
         for c in range(self.row):
             for r in range(self.col):
                 coords = [c, r]
                 btn = self.buttons[coords[0], coords[1]]
                 btn.config(bg = "black")
-       # self.master.after(2000, self.randomize_grid())
-        #time.sleep(2)
         
     ## guess_squares: This is where the user guesses which squares 1s based on the randomized grid
     ## Current Issue: Game should now no longer require user text input, should only be done through clicking
@@ -189,20 +184,8 @@ class SquaresGame:
 root = tk.Tk()
 root.geometry('400x400')
 root.title("Memory Squares")
-'''
-root.columnconfigure(0, weight=1)
-root.columnconfigure(1, weight=1)
-root.columnconfigure(2, weight=1)
-root.columnconfigure(3, weight=1)
-root.columnconfigure(4, weight=1)
-root.columnconfigure(5, weight=1)
-root.columnconfigure(6, weight=1)
-'''
-
-#root.rowconfigure(0, weight = 1)
 app = SquaresGame(root, [], [], {})
 root.mainloop()
-#g.start()
 
 
 
