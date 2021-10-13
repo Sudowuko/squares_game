@@ -22,9 +22,9 @@ class SquaresGame:
         self.buttons = buttons
 
         ## Create all of the main containers
-        self.top_frame = tk.Frame(self.master, bg='pink', width = 400, height = 90, pady = 5)
-        self.mid_frame = tk.Frame(self.master, bg='lavender', width = 400, height = 40, pady = 5)
-        self.bot_frame = tk.Frame(self.master, bg='cyan', width = 400, height = 240, pady = 5)
+        self.top_frame = tk.Frame(self.master, bg='gray', width = 400, height = 90, pady = 5)
+        self.mid_frame = tk.Frame(self.master, bg='gray', width = 400, height = 40, pady = 5)
+        self.bot_frame = tk.Frame(self.master, bg='gray', width = 400, height = 240, pady = 5)
         ## Layout all of the main containers
         self.top_frame.grid(row = 0, sticky = tk.EW)
         self.mid_frame.grid(row = 1, sticky = tk.EW)
@@ -32,9 +32,11 @@ class SquaresGame:
         
         ## Create the widgets for the top frame
         game_title = tk.Label(self.top_frame, text='Memory Squares')
+        game_title.config(font=("TkDefaultFont, 20"))
 
         ## Layout the widgets in the top frame 
-        game_title.grid(row = 0, column = 0, sticky = tk.NSEW)
+        game_title.grid(row = 0, column = 0, sticky = tk.EW)
+        game_title.pack(anchor = 'center')
 
         ## Create the widgets for the mid frame
         easy_btn = tk.Button(self.mid_frame, text = "Easy", command = self.easy)
@@ -46,7 +48,6 @@ class SquaresGame:
         med_btn.grid(row = 0, column = 1, sticky = tk.EW, padx = 5, pady = 5)
         hard_btn.grid(row = 0, column = 2, sticky = tk.EW, padx = 5, pady = 5)
         
- 
     ## Difficulty Functions
 
     def easy(self):
@@ -81,7 +82,7 @@ class SquaresGame:
                 self.user_grid[-1].append(0)
                 coords = [c, r]
                 action_with_arg = partial(self.guess_squares, coords)
-                btn = tk.Button(self.bot_frame, bg = "black", command = action_with_arg)
+                btn = tk.Button(self.bot_frame, bg = "black", width = 5, height = 2, command = action_with_arg)
                 btn.grid(row = r + 1, column = c, padx=5, pady=5, sticky = tk.EW)
                 self.buttons[c , r] = btn
 
@@ -95,16 +96,11 @@ class SquaresGame:
             if ((self.answer_grid[rand_x][rand_y]) == 0):
                 self.answer_grid[rand_x][rand_y] = 1
                 btn = self.buttons[rand_y,rand_x]
-                btn.config(bg = "purple")
+                btn.config(bg = "blue")
                 start_lvl += 1
         print("Answer: ", self.answer_grid)
-        self.waithere()
-    
-    ## waithere: Potential delay function that will be used with whiteout
-    def waithere(self):
         self.master.after(3000, self.white_out)
-        print("waiting...")
-
+    
     ## white_out: changes the colour of each button to white without mutating the values
     def white_out (self):
         for c in range(self.row):
