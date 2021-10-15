@@ -98,15 +98,24 @@ class SquaresGame:
                 btn.config(bg = "blue")
                 start_lvl += 1
         print("Answer: ", self.answer_grid)
+        self.disable_all()
         self.master.after(3000, self.white_out)
     
+    ## disable: Makes all the buttons unclickable 
+    def disable_all(self):
+        for c in range(self.row):
+            for r in range(self.col):
+                coords = [c, r]
+                btn = self.buttons[coords[0], coords[1]]
+                btn.config(state = "disabled")
+
     ## white_out: changes the colour of each button to white without mutating the values
     def white_out (self):
         for c in range(self.row):
             for r in range(self.col):
                 coords = [c, r]
                 btn = self.buttons[coords[0], coords[1]]
-                btn.config(bg = "black")
+                btn.config(bg = "black", state = "normal")
         
     ## guess_squares: This is where the user guesses which squares 1s based on the randomized grid
     ## Current Issue: Game should now no longer require user text input, should only be done through clicking
