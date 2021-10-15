@@ -15,7 +15,8 @@ class SquaresGame:
         self.lvl = 1
         self.lives = 10
         self.points = 0
-        self.answer_grid = answer_grid 
+        self.answer_grid = answer_grid
+
         ## GUI GRID STUFF
         self.master = master
         self.user_grid = user_grid 
@@ -25,6 +26,7 @@ class SquaresGame:
         self.top_frame = tk.Frame(self.master, bg='gray', width = 400, height = 90, pady = 5)
         self.mid_frame = tk.Frame(self.master, bg='gray', width = 400, height = 40, pady = 5)
         self.bot_frame = tk.Frame(self.master, bg='gray', width = 400, height = 240, pady = 5)
+
         ## Layout all of the main containers
         self.top_frame.grid(row = 0, sticky = tk.EW)
         self.mid_frame.grid(row = 1, sticky = tk.EW)
@@ -54,23 +56,18 @@ class SquaresGame:
         self.row = 5
         self.col = 5
         self.create_grid()
-        self.randomize_grid()
     
     def medium(self):
         self.row = 6
         self.col = 6
         self.create_grid()
-        self.randomize_grid()
     
     def hard(self):
         self.row = 7
         self.col = 7
         self.create_grid()
-        self.randomize_grid()
 
     ##Create_grid: Creates a grid based on user inputs for rows and columns
-    ## Should create grid based on difficulty user selected
-    ## Creates data values for the grid
     def create_grid (self):
         self.answer_grid = []
         self.user_grid = []
@@ -85,9 +82,11 @@ class SquaresGame:
                 btn = tk.Button(self.bot_frame, bg = "black", width = 5, height = 2, command = action_with_arg)
                 btn.grid(row = r + 1, column = c, padx=5, pady=5, sticky = tk.EW)
                 self.buttons[c , r] = btn
+        self.randomize_grid()
 
     ## Randomize_grid: Changes the grid values from 0 to 1 based on level
-    ## 1s represent the number you need to memorize for the game
+    ## 0s represent the default squares
+    ## 1s represent the squares you need to memorize
     def randomize_grid (self):
         start_lvl = 0
         while (start_lvl != self.lvl):
@@ -154,10 +153,7 @@ class SquaresGame:
             print("Answer grid ", self.answer_grid)
             return False
     
- 
-    ## Should reset and delete all the extra buttons once the user levels up 
-    ## Currently not tested
-    ## Maybe don't delete and recreate the buttons all over again, just reset it so that so you don't create new buttons every single time
+    ## reset_grid: Should reset and delete all the extra buttons once the user levels up 
     def reset_grid (self):
         for c in range(self.row):
             for r in range(self.col):
@@ -166,10 +162,8 @@ class SquaresGame:
                 btn.config(text = "BLANK")
                 btn.destroy()
         self.create_grid()
-        self.randomize_grid()
 
-    ## win_game: After the halfway point in the game, the user wins mainly because it doesn't get any more difficult, the colours just get flipped
-    ##          This is more efficient than just waiting until the squares change colour 
+    ## win_game: After the halfway point in the game, the user wins because after that it doesn't get any more difficult, the colours just get flipped
     def win_game (self):
         half_squares = int((self.row * self.col) / 2)
         if (half_squares <= self.lvl):
