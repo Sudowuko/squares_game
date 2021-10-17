@@ -1,4 +1,3 @@
-## To make it easier to start, make it text based
 ## Array[Row][Col] = Array[y][x]
 ## I.e. Row = y, Col = x
 
@@ -22,34 +21,44 @@ class SquaresGame:
         self.user_grid = user_grid 
         self.buttons = buttons
 
-        ## Create all of the main containers
-        self.top_frame = tk.Frame(self.master, bg='gray', width = 400, height = 90, pady = 5)
-        self.mid_frame = tk.Frame(self.master, bg='gray', width = 400, height = 40, pady = 5)
-        self.bot_frame = tk.Frame(self.master, bg='gray', width = 400, height = 240, pady = 5)
+        ## Create all of the main containers, frames arranged from top to bottom
+        self.frame1 = tk.Frame(self.master, bg='gray', width = 400, height = 90, pady = 5)
+        self.frame2 = tk.Frame(self.master, bg='gray', width = 400, height = 40, pady = 5)
+        self.frame3 = tk.Frame(self.master, bg='gray', width = 400, height = 240, pady = 5)
+        self.frame4 = tk.Frame(self.master, bg='gray', width = 400, height = 40, pady = 5)
 
         ## Layout all of the main containers
-        self.top_frame.grid(row = 0, sticky = tk.EW)
-        self.mid_frame.grid(row = 1, sticky = tk.EW)
-        self.bot_frame.grid(row = 2, sticky = tk.EW)
+        self.frame1.grid(row = 0, sticky = tk.EW)
+        self.frame2.grid(row = 1, sticky = tk.EW)
+        self.frame3.grid(row = 2, sticky = tk.EW)
+        self.frame4.grid(row = 3, sticky = tk.EW)
         
-        ## Create the widgets for the top frame
-        game_title = tk.Label(self.top_frame, text='Memory Squares')
+        ## Create the widgets for frame 1
+        game_title = tk.Label(self.frame1, text='Memory Squares', fg = 'white', bg = 'gray')
         game_title.config(font=("TkDefaultFont, 20"))
 
-        ## Layout the widgets in the top frame 
+        ## Layout the widgets in frame 1
         game_title.grid(row = 0, column = 0, sticky = tk.EW)
         game_title.pack(anchor = 'center')
 
-        ## Create the widgets for the mid frame
-        easy_btn = tk.Button(self.mid_frame, text = "Easy", command = self.easy)
-        med_btn = tk.Button(self.mid_frame, text = "Med", command = self.medium)
-        hard_btn = tk.Button(self.mid_frame, text = "Hard", command = self.hard)
+        ## Create the widgets for frame 2
+        easy_btn = tk.Button(self.frame2, text = "Easy", command = self.easy)
+        med_btn = tk.Button(self.frame2, text = "Med", command = self.medium)
+        hard_btn = tk.Button(self.frame2, text = "Hard", command = self.hard)
 
-        ## Layout the widgets in the mid frame
+        ## Layout the widgets in frame 2
         easy_btn.grid(row = 0, column = 0, sticky = tk.EW, padx = 5, pady = 5)
         med_btn.grid(row = 0, column = 1, sticky = tk.EW, padx = 5, pady = 5)
         hard_btn.grid(row = 0, column = 2, sticky = tk.EW, padx = 5, pady = 5)
-        
+
+        ## Create the widgets for frame 4
+        self.lvl_label = tk.Label(self.frame4, text='Level: ' + str(self.lvl), fg = 'white', bg = 'gray')
+        self.lives_label = tk.Label(self.frame4, text='Lives: ' + str(self.lives), fg = 'white', bg = 'gray')
+
+        ## Layout the widgets in frame 4
+        self.lvl_label.grid(row = 0, column = 0, sticky = tk.EW)
+        self.lives_label.grid(row = 1, column = 0, sticky = tk.EW)
+
     ## Difficulty Functions
 
     def easy(self):
@@ -79,7 +88,7 @@ class SquaresGame:
                 self.user_grid[-1].append(0)
                 coords = [c, r]
                 action_with_arg = partial(self.guess_squares, coords)
-                btn = tk.Button(self.bot_frame, bg = "black", width = 5, height = 2, command = action_with_arg)
+                btn = tk.Button(self.frame3, bg = "black", width = 5, height = 2, command = action_with_arg)
                 btn.grid(row = r + 1, column = c, padx=5, pady=5, sticky = tk.EW)
                 self.buttons[c , r] = btn
         self.randomize_grid()
@@ -136,12 +145,14 @@ class SquaresGame:
             else:
                 btn.config(bg = "red")
                 self.lives -= 1
+                self.lives_label.config(text='Lives: ' + str(self.lives))
         correct_coords = []
         ## If the user got everything right, they level up 
         if (self.points >= self.lvl):
             print("Moving to next level")
             self.points = 0
             self.lvl += 1
+            self.lvl_label.config(text='Level: ' + str(self.lvl))
             ## Winning condition
             half_squares = int((self.row * self.col) / 2)
             if (half_squares <= self.lvl):
