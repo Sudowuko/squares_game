@@ -9,7 +9,7 @@ class SquaresGame:
         self.row = 0
         self.col = 0
         self.lvl = 1
-        self.lives = 10
+        self.lives = 3
         self.points = 0
         self.answer_grid = answer_grid
 
@@ -23,13 +23,15 @@ class SquaresGame:
         self.frame2 = tk.Frame(self.master, bg='gray', width = 400, height = 40, pady = 5)
         self.frame3 = tk.Frame(self.master, bg='gray', width = 400, height = 240, pady = 5)
         self.frame4 = tk.Frame(self.master, bg='gray', width = 400, height = 40, pady = 5)
+        self.frame5 = tk.Frame(self.master, bg='gray', width = 400, height = 20, pady = 5)
 
         ## Layout all of the main containers
         self.frame1.grid(row = 0, sticky = tk.EW)
         self.frame2.grid(row = 1, sticky = tk.EW)
         self.frame3.grid(row = 2, sticky = tk.EW)
         self.frame4.grid(row = 3, sticky = tk.EW)
-        
+        self.frame5.grid(row = 4, sticky = tk.EW)
+
         ## Create the widgets for frame 1
         game_title = tk.Label(self.frame1, text='Memory Squares', fg = 'white', bg = 'gray')
         game_title.config(font=("TkDefaultFont, 20"))
@@ -39,9 +41,13 @@ class SquaresGame:
         game_title.pack(anchor = 'center')
 
         ## Create the widgets for frame 2
-        self.easy_btn = tk.Button(self.frame2, text = "Easy", command = self.easy)
-        self.med_btn = tk.Button(self.frame2, text = "Med", command = self.medium)
-        self.hard_btn = tk.Button(self.frame2, text = "Hard", command = self.hard)
+        easy_diff = partial(self.set_diff, 5)
+        med_diff = partial(self.set_diff, 6)
+        hard_diff = partial(self.set_diff, 7)
+
+        self.easy_btn = tk.Button(self.frame2, text = "Easy", command = easy_diff)
+        self.med_btn = tk.Button(self.frame2, text = "Med", command = med_diff)
+        self.hard_btn = tk.Button(self.frame2, text = "Hard", command = hard_diff)
 
         ## Layout the widgets in frame 2
         self.easy_btn.grid(row = 0, column = 0, sticky = tk.EW, padx = 5, pady = 5)
@@ -56,21 +62,33 @@ class SquaresGame:
         self.lvl_label.grid(row = 0, column = 0, sticky = tk.EW)
         self.lives_label.grid(row = 1, column = 0, sticky = tk.EW)
 
-    ## Difficulty Functions
+        ## Create the widgets for frame 5
+        self.play_again = tk.Button(self.frame5, text = "Play Again", command = self.play)
 
-    def easy(self):
-        self.row = 5
-        self.col = 5
-        self.create_grid()
-    
-    def medium(self):
-        self.row = 6
-        self.col = 6
-        self.create_grid()
-    
-    def hard(self):
-        self.row = 7
-        self.col = 7
+        ## Layout the widgets in frame 5
+        self.play_again.grid(row = 0, column = 0, sticky = tk.EW)
+        self.play_again.pack(anchor = 'center')
+
+    ## play_again: Resets the game if you want to play again 
+    def play(self):
+        self.lvl = 1
+        self.lives = 3
+        self.easy_btn.config(state = "normal")
+        self.med_btn.config(state = "normal")
+        self.hard_btn.config(state = "normal")
+        for c in range(self.row):
+            for r in range(self.col):
+                coords = [c, r]
+                btn = self.buttons[coords[0], coords[1]]
+                btn.destroy()
+
+    ## Difficulty Functions
+    def set_diff(self, num):
+        self.row = num
+        self.col = num
+        self.easy_btn.config(state = "disabled")
+        self.med_btn.config(state = "disabled")
+        self.hard_btn.config(state = "disabled")
         self.create_grid()
 
     ##Create_grid: Creates a grid based on user inputs for rows and columns
@@ -87,10 +105,8 @@ class SquaresGame:
                 action_with_arg = partial(self.guess_squares, coords)
                 btn = tk.Button(self.frame3, bg = "black", width = 5, height = 2, command = action_with_arg)
                 btn.grid(row = r + 1, column = c, padx=5, pady=5, sticky = tk.EW)
+                btn.config(state = "normal")
                 self.buttons[c , r] = btn
-        self.easy_btn.config(state = "disabled")
-        self.med_btn.config(state = "disabled")
-        self.hard_btn.config(state = "disabled")
         self.randomize_grid()
 
     ## Randomize_grid: Changes the grid values from 0 to 1 based on level
@@ -112,6 +128,7 @@ class SquaresGame:
 
     ## disable: Makes all the buttons unclickable 
     def disable_all(self):
+        self.play_again.config(state = "disabled")
         for c in range(self.row):
             for r in range(self.col):
                 coords = [c, r]
@@ -120,6 +137,7 @@ class SquaresGame:
 
     ## black_all: changes the colour of each button to back to black without mutating the values
     def black_all(self):
+        self.play_again.config(state = "normal")
         for c in range(self.row):
             for r in range(self.col):
                 coords = [c, r]
@@ -174,7 +192,6 @@ class SquaresGame:
             for r in range(self.col):
                 coords = [c, r]
                 btn = self.buttons[coords[0], coords[1]]
-                btn.config(text = "BLANK")
                 btn.destroy()
         self.create_grid()
 
