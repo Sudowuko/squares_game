@@ -53,8 +53,8 @@ class SquaresGame:
     ## Difficulty Functions
 
     def easy(self):
-        self.row = 5
-        self.col = 5
+        self.row = 4
+        self.col = 4
         self.create_grid()
     
     def medium(self):
@@ -99,7 +99,7 @@ class SquaresGame:
                 start_lvl += 1
         print("Answer: ", self.answer_grid)
         self.disable_all()
-        self.master.after(3000, self.white_out)
+        self.master.after(3000, self.black_all)
     
     ## disable: Makes all the buttons unclickable 
     def disable_all(self):
@@ -109,8 +109,8 @@ class SquaresGame:
                 btn = self.buttons[coords[0], coords[1]]
                 btn.config(state = "disabled")
 
-    ## white_out: changes the colour of each button to white without mutating the values
-    def white_out (self):
+    ## black_all: changes the colour of each button to back to black without mutating the values
+    def black_all(self):
         for c in range(self.row):
             for r in range(self.col):
                 coords = [c, r]
@@ -126,20 +126,14 @@ class SquaresGame:
             ## User guess
             guess_y = user_coords[0]
             guess_x = user_coords[1]
-            guess_coord = [guess_x, guess_y]
-            if (guess_coord in correct_coords):
-                print("You already guessed this correctly, try again")
             ## Correct guess
-            elif ((self.answer_grid[guess_x][guess_y]) == 1):
+            if ((self.answer_grid[guess_x][guess_y]) == 1):
                 (self.user_grid[guess_x][guess_y]) = 1
                 self.points += 1
                 correct_coords.append([guess_x, guess_y])
-                print("You guessed correct, keep going")
-                print("current grid ", self.user_grid)
                 btn.config(bg = "white")
             ## Incorrect guess
             else:
-                print("Incorrect, try again")
                 btn.config(bg = "red")
                 self.lives -= 1
         correct_coords = []
@@ -149,8 +143,11 @@ class SquaresGame:
             self.points = 0
             self.lvl += 1
             ## Winning condition
-            if (self.win_game()):
-                print("YOU WIN")
+            half_squares = int((self.row * self.col) / 2)
+            if (half_squares <= self.lvl):
+                print("You win")
+                self.reset_grid()
+                self.disable_all()
                 return True
             self.reset_grid()
         ## If they used up all their lives they lose the game
@@ -160,6 +157,7 @@ class SquaresGame:
             print("Points: ", self.points)
             print("Your Grid ", self.user_grid)
             print("Answer grid ", self.answer_grid)
+            self.disable_all()
             return False
     
     ## reset_grid: Should reset and delete all the extra buttons once the user levels up 
@@ -172,19 +170,10 @@ class SquaresGame:
                 btn.destroy()
         self.create_grid()
 
-    ## win_game: After the halfway point in the game, the user wins because after that it doesn't get any more difficult, the colours just get flipped
-    def win_game (self):
-        half_squares = int((self.row * self.col) / 2)
-        if (half_squares <= self.lvl):
-            print("You win")
-            return True
-        return False
-
 root = tk.Tk()
 root.geometry('400x400')
 root.title("Memory Squares")
 app = SquaresGame(root, [], [], {})
 root.mainloop()
-
 
 
