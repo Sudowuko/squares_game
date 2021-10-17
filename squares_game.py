@@ -1,6 +1,3 @@
-## Array[Row][Col] = Array[y][x]
-## I.e. Row = y, Col = x
-
 import tkinter as tk
 from random import randrange
 from functools import partial
@@ -42,14 +39,14 @@ class SquaresGame:
         game_title.pack(anchor = 'center')
 
         ## Create the widgets for frame 2
-        easy_btn = tk.Button(self.frame2, text = "Easy", command = self.easy)
-        med_btn = tk.Button(self.frame2, text = "Med", command = self.medium)
-        hard_btn = tk.Button(self.frame2, text = "Hard", command = self.hard)
+        self.easy_btn = tk.Button(self.frame2, text = "Easy", command = self.easy)
+        self.med_btn = tk.Button(self.frame2, text = "Med", command = self.medium)
+        self.hard_btn = tk.Button(self.frame2, text = "Hard", command = self.hard)
 
         ## Layout the widgets in frame 2
-        easy_btn.grid(row = 0, column = 0, sticky = tk.EW, padx = 5, pady = 5)
-        med_btn.grid(row = 0, column = 1, sticky = tk.EW, padx = 5, pady = 5)
-        hard_btn.grid(row = 0, column = 2, sticky = tk.EW, padx = 5, pady = 5)
+        self.easy_btn.grid(row = 0, column = 0, sticky = tk.EW, padx = 5, pady = 5)
+        self.med_btn.grid(row = 0, column = 1, sticky = tk.EW, padx = 5, pady = 5)
+        self.hard_btn.grid(row = 0, column = 2, sticky = tk.EW, padx = 5, pady = 5)
 
         ## Create the widgets for frame 4
         self.lvl_label = tk.Label(self.frame4, text='Level: ' + str(self.lvl), fg = 'white', bg = 'gray')
@@ -62,8 +59,8 @@ class SquaresGame:
     ## Difficulty Functions
 
     def easy(self):
-        self.row = 3
-        self.col = 3
+        self.row = 5
+        self.col = 5
         self.create_grid()
     
     def medium(self):
@@ -91,6 +88,9 @@ class SquaresGame:
                 btn = tk.Button(self.frame3, bg = "black", width = 5, height = 2, command = action_with_arg)
                 btn.grid(row = r + 1, column = c, padx=5, pady=5, sticky = tk.EW)
                 self.buttons[c , r] = btn
+        self.easy_btn.config(state = "disabled")
+        self.med_btn.config(state = "disabled")
+        self.hard_btn.config(state = "disabled")
         self.randomize_grid()
 
     ## Randomize_grid: Changes the grid values from 0 to 1 based on level
@@ -109,7 +109,7 @@ class SquaresGame:
         print("Answer: ", self.answer_grid)
         self.disable_all()
         self.master.after(3000, self.black_all)
-    
+
     ## disable: Makes all the buttons unclickable 
     def disable_all(self):
         for c in range(self.row):
