@@ -53,8 +53,8 @@ class SquaresGame:
     ## Difficulty Functions
 
     def easy(self):
-        self.row = 4
-        self.col = 4
+        self.row = 3
+        self.col = 3
         self.create_grid()
     
     def medium(self):
@@ -146,17 +146,14 @@ class SquaresGame:
             half_squares = int((self.row * self.col) / 2)
             if (half_squares <= self.lvl):
                 print("You win")
-                self.reset_grid()
+                self.black_all()
                 self.disable_all()
                 return True
             self.reset_grid()
         ## If they used up all their lives they lose the game
         if (self.lives == 0):
             print("Game over")
-            print("Level: ", self.lvl)
-            print("Points: ", self.points)
-            print("Your Grid ", self.user_grid)
-            print("Answer grid ", self.answer_grid)
+            self.black_all()
             self.disable_all()
             return False
     
