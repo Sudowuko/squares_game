@@ -82,7 +82,7 @@ class SquaresGame:
                 btn = self.buttons[coords[0], coords[1]]
                 btn.destroy()
 
-    ## Difficulty Functions
+    ## set_diff: Officially starts the game based on the set difficulty 
     def set_diff(self, num):
         self.row = num
         self.col = num
@@ -91,8 +91,8 @@ class SquaresGame:
         self.hard_btn.config(state = "disabled")
         self.create_grid()
 
-    ##Create_grid: Creates a grid based on user inputs for rows and columns
-    def create_grid (self):
+    ## Create_grid: Creates a grid based on user inputs for rows and columns
+    def create_grid(self):
         self.answer_grid = []
         self.user_grid = []
         for c in range(self.row):
@@ -112,7 +112,7 @@ class SquaresGame:
     ## Randomize_grid: Changes the grid values from 0 to 1 based on level
     ## 0s represent the default squares
     ## 1s represent the squares you need to memorize
-    def randomize_grid (self):
+    def randomize_grid(self):
         start_lvl = 0
         while (start_lvl != self.lvl):
             rand_y = randrange(self.row)
@@ -146,25 +146,23 @@ class SquaresGame:
         
     ## guess_squares: This is where the user guesses which squares 1s based on the randomized grid
     ## Current Issue: Game should now no longer require user text input, should only be done through clicking
-    def guess_squares (self, user_coords):
+    def guess_squares(self, user_coords):
         btn = self.buttons[user_coords[0], user_coords[1]]
         correct_coords = []
-        if (self.points != self.lvl and self.lives > 0):
-            ## User guess
-            guess_y = user_coords[0]
-            guess_x = user_coords[1]
-            ## Correct guess
-            if ((self.answer_grid[guess_x][guess_y]) == 1):
-                (self.user_grid[guess_x][guess_y]) = 1
-                self.points += 1
-                correct_coords.append([guess_x, guess_y])
-                btn.config(bg = "white")
-            ## Incorrect guess
-            else:
-                btn.config(bg = "red")
-                self.lives -= 1
-                self.lives_label.config(text='Lives: ' + str(self.lives))
-        correct_coords = []
+        ## User guess
+        guess_y = user_coords[0]
+        guess_x = user_coords[1]
+        ## Correct guess
+        if ((self.answer_grid[guess_x][guess_y]) == 1):
+            (self.user_grid[guess_x][guess_y]) = 1
+            self.points += 1
+            correct_coords.append([guess_x, guess_y])
+            btn.config(bg = "white")
+        ## Incorrect guess
+        else:
+            btn.config(bg = "red")
+            self.lives -= 1
+            self.lives_label.config(text='Lives: ' + str(self.lives))
         ## If the user got everything right, they level up 
         if (self.points >= self.lvl):
             print("Moving to next level")
@@ -187,7 +185,7 @@ class SquaresGame:
             return False
     
     ## reset_grid: Should reset and delete all the extra buttons once the user levels up 
-    def reset_grid (self):
+    def reset_grid(self):
         for c in range(self.row):
             for r in range(self.col):
                 coords = [c, r]
