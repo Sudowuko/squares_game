@@ -149,7 +149,6 @@ class SquaresGame:
     def guess_squares(self, user_coords):
         btn = self.buttons[user_coords[0], user_coords[1]]
         correct_coords = []
-        ## User guess
         guess_y = user_coords[0]
         guess_x = user_coords[1]
         ## Correct guess
