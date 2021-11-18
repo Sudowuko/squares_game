@@ -73,6 +73,9 @@ class SquaresGame:
     def play(self):
         self.lvl = 1
         self.lives = 3
+        self.lives_label.config(text='Lives: ' + str(self.lives))
+        self.lvl_label.config(text='Level: ' + str(self.lvl))
+        self.play_again.config(text='Play Again')
         self.easy_btn.config(state = "normal")
         self.med_btn.config(state = "normal")
         self.hard_btn.config(state = "normal")
@@ -176,11 +179,12 @@ class SquaresGame:
                 self.disable_all()
                 return True
             self.reset_grid()
-        ## If they used up all their lives they lose the game
+        ## Losing condition 
         if (self.lives == 0):
             print("Game over")
             self.black_all()
             self.disable_all()
+            self.play_again.config(state = "normal")s
             return False
     
     ## reset_grid: Should reset and delete all the extra buttons once the user levels up 
@@ -193,7 +197,7 @@ class SquaresGame:
         self.create_grid()
 
 root = tk.Tk()
-root.geometry('400x400')
+root.geometry('400x440')
 root.title("Memory Squares")
 app = SquaresGame(root, [], [], {})
 root.mainloop()
