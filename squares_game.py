@@ -184,7 +184,7 @@ class SquaresGame:
             print("Game over")
             self.black_all()
             self.disable_all()
-            self.play_again.config(state = "normal")s
+            self.play_again.config(state = "normal")
             return False
     
     ## reset_grid: Should reset and delete all the extra buttons once the user levels up 
